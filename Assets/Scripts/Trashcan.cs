@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Trashcan : MonoBehaviour
 {
-    private int trashThrownCount;
+    [SerializeField] private int trashThrownCount;
     private int totalTrashThrownCount;
     
     [SerializeField] private GameObject game;
@@ -23,5 +23,11 @@ public class Trashcan : MonoBehaviour
     public int TotalTrashThrownCount()
     {
         return totalTrashThrownCount;
+    }
+
+    public void RemoveTrashThrownCount(int amount)
+    {
+        trashThrownCount = Mathf.Max(0, trashThrownCount - amount);
+        Debug.Log($"{trashThrownCount} = {trashThrownCount+amount} - {amount}");
     }
 }

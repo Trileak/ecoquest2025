@@ -11,18 +11,21 @@ public class Minion : MonoBehaviour
     private bool isColliding = false;
     private bool pickedUpTrash = false;
     private Trash trash;
+    private Player player;
+    private bool isHeld;
 
     [SerializeField] private float rotationSpeed = 5f;
-    [SerializeField] private float moveForce = 1f;
-    [SerializeField] private float dodgeForce = 1f;
+    [SerializeField] private float moveForce     = 1f;
+    [SerializeField] private float dodgeForce    = 1f;
     [SerializeField] private Transform objectGrabPoint;
     [SerializeField] private Transform trashCan;
 
     private void Awake()
     {
-        trashTracker = FindObjectOfType<TrashTracker>();
+        trashTracker    = FindObjectOfType<TrashTracker>();
         trashTransforms = trashTracker.GetTrashTransforms();
-        rigidbody = GetComponent<Rigidbody>();
+        rigidbody       = GetComponent<Rigidbody>();
+        player          = FindObjectOfType<Player>();
     }
 
     private void OnCollisionEnter(Collision other)
@@ -59,17 +62,24 @@ public class Minion : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!pickedUpTrash)
+        if (!isHeld) 
         {
-            Transform closest = GetClosestTrash();
-            if (closest != null)
+            if (!pickedUpTrash)
             {
-                Move(closest.position);
+                Transform closest = GetClosestTrash();
+                if (closest != null)
+                {
+                    Move(closest.position);
+                }
+            }
+            else
+            {
+                Move(trashCan.position);
             }
         }
         else
         {
-            Move(trashCan.position);
+            transform.position = player.GetGrabPointTransform().position;
         }
     }
 
@@ -118,6 +128,36 @@ public class Minion : MonoBehaviour
         {
             Vector3 dodgeDirection = -transform.right;
             rigidbody.AddForce(dodgeDirection * dodgeForce, ForceMode.Acceleration);
+        }
+    }
+
+    public void OnBought()
+    {
+        rigidbody.useGravity  = false;                    // Stop using gravity 
+        rigidbody.isKinematic = true;                     // Stop using the rigidbody
+        isHeld                = true;                     // Become held
+        foreach (Transform child in gameObject.transform) // For each child in this parent
+        {
+            Collider collider = child.GetComponent<Collider>(); // Get the collider
+            if (collider != null) // If there is a collider
+            {
+                collider.enabled = false; // Turn it off
+            }
+        }
+    }
+
+    public void Drop()
+    {
+        rigidbody.isKinematic = false; // Start using the rigidbody
+        rigidbody.useGravity  = true;  // Start using gravity
+        isHeld                = false; // Start being held
+        foreach (Transform child in gameObject.transform) // Same as line 22 but turns *off* the collider
+        {
+            Collider collider = child.GetComponent<Collider>();
+            if (collider != null)
+            {
+                collider.enabled = true;
+            }
         }
     }
 }

@@ -1,18 +1,28 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BuyItem : MonoBehaviour
 {
-    private Button myButton;
+    [SerializeField] private Button myButton;
+    [SerializeField] private Trashcan trashcan;
+    [SerializeField] private GameObject minionPrefab;
 
     void Start()
     {
-        myButton = GetComponent<Button>();
-        myButton.onClick.AddListener(HandleClick);
+        myButton?.onClick.AddListener(HandleClick);
+        trashcan = FindObjectOfType<Trashcan>();
     }
 
     void HandleClick()
     {
-        Debug.Log("The button hath been pressed!");
+        Debug.Log("18");
+        if (trashcan?.TrashThrownCount() >= 10)
+        {
+            Debug.Log("21");
+            trashcan?.RemoveTrashThrownCount(10);
+            GameObject minion = Instantiate(minionPrefab, transform.position, Quaternion.identity);
+            minion.GetComponent<Minion>()?.OnBought();
+        }
     }
 }

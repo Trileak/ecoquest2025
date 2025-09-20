@@ -1101,6 +1101,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f93e5a9e791594b991117132d8af64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myButton: {fileID: 661530848}
+  trashcan: {fileID: 6704060376795145597, guid: 9f2ebf71582c2314e988f3af915772e7, type: 3}
+  minionPrefab: {fileID: 0}
 --- !u!1 &1019686204
 GameObject:
   m_ObjectHideFlags: 0

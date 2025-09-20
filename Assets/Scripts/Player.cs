@@ -161,4 +161,9 @@ public class Player : MonoBehaviour
     {
         return playerInputActions;
     }
+
+    public Transform GetGrabPointTransform()
+    {
+        return objectGrabPointTransform;
+    }
 }
