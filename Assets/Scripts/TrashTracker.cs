@@ -1,0 +1,84 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+// ReSharper disable InconsistentNaming
+
+public class TrashTracker : MonoBehaviour
+{
+    private List<Transform> trashTransforms = new List<Transform>();
+    private List<GameObject> trackerObjects = new List<GameObject>();
+    private Player player;
+
+    [SerializeField] private GameObject trackerImagePrefab;
+    [SerializeField] private GameObject trackerImageParent;
+
+    private void Awake()
+    {
+        player = FindObjectOfType<Player>();
+    }
+
+    private float GetAngleOfTrash(Transform trashTransform)
+    {
+        Vector3 toTrash = trashTransform.position - player.transform.position;
+        toTrash.y = 0;
+        Vector3 playerForward = player.transform.forward;
+        playerForward.y = 0;
+        float angle = Vector3.SignedAngle(playerForward, toTrash, Vector3.up);
+        return angle;
+    }
+    
+    private void UpdateTrackers()
+    {
+        for (int i = 0; i < trashTransforms.Count; i++)
+        {
+            float angle = GetAngleOfTrash(trashTransforms[i]) * 2; // Range: -180 to 180 * 2 for both
+
+            Vector3 trackerPos = trackerObjects[i].transform.position;
+            trackerPos.x = angle + Screen.width / 2; // Offset to 
+            trackerObjects[i].transform.position = trackerPos; 
+        }
+    }
+
+
+    private void FixedUpdate()
+    {
+        UpdateTrackers();
+    }
+
+    private float NormalizeAngle(float angle)
+    {
+        return Mathf.DeltaAngle(0f, angle);
+    }
+    
+    public void AddTrash(Transform trash)
+    {
+        trashTransforms.Add(trash);
+        trackerObjects.Add(Instantiate(trackerImagePrefab, trackerImageParent.transform));
+    }
+
+    public void DeleteTrash(Transform trash)
+    {
+        int index = trashTransforms.IndexOf(trash);
+
+        if (index >= 0 && index < trackerObjects.Count)
+        {
+            // Remove tracker GameObject
+            Destroy(trackerObjects[index]);
+            trackerObjects.RemoveAt(index);
+
+            // Remove trash reference
+            trashTransforms.RemoveAt(index);
+        }
+    }
+
+    public int GetTrashCount()
+    {
+        return trashTransforms.Count;
+    }
+
+    public List<Transform> GetTrashTransforms()
+    {
+        return trashTransforms;
+    }
+}
