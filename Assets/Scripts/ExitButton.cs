@@ -17,7 +17,7 @@ public class ExitButton : MonoBehaviour
     
     private void Start()
     {
-        myButton.onClick.AddListener(OnButtonPressed);
+        myButton?.onClick.AddListener(OnButtonPressed);
     }
 
     private void OnButtonPressed()
@@ -32,10 +32,5 @@ public class ExitButton : MonoBehaviour
         }
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-    }
-
-    private void OnDisable()
-    {
-        
     }
 }
