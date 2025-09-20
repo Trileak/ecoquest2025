@@ -1,3 +1,5 @@
+// Resharper disable Using directive is not required by the code and can be safely removed
+// ReSharper disable once RedundantUsingDirective
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,12 +8,14 @@ public class Minion : MonoBehaviour
 {
     private List<Transform> trashTransforms;
     private TrashTracker trashTracker;
-    private Rigidbody rigidbody;
-    private bool isColliding = false;
+    private Rigidbody rigidbody = new Rigidbody();
+    private bool isColliding    = false;
+    private bool pickedUpTrash  = false;
 
     [SerializeField] private float rotationSpeed = 5f;
     [SerializeField] private float moveForce = 1f;
     [SerializeField] private float dodgeForce = 1f;
+    [SerializeField] private Transform objectGrabPoint;
 
     private void Awake()
     {
@@ -22,6 +26,11 @@ public class Minion : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
+        if (other.gameObject.CompareTag("Trash"))
+        {
+            other.gameObject.transform.TryGetComponent(out Trash trash);
+            trash.Grab(objectGrabPoint);
+        }
         if (!other.gameObject.CompareTag("Floor"))
         {
             isColliding = true;
@@ -38,31 +47,30 @@ public class Minion : MonoBehaviour
 
     private void FixedUpdate()
     {
-
-        Transform GetClosestTrash()
+        Move(GetClosestTrash().position);
+    }
+    
+    private Transform GetClosestTrash()
+    {
+        Transform closestTrash = null;
+        float closestDistance = Mathf.Infinity;
+        foreach (Transform trash in trashTransforms)
         {
-            Transform closestTrash = null;
-            float closestDistance = Mathf.Infinity;
-            foreach (Transform trash in trashTransforms)
+            float distance = Vector3.Distance(transform.position, trash.position);
+            if (distance < closestDistance)
             {
-                float distance = Vector3.Distance(transform.position, trash.position);
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    closestTrash = trash;
-                }
+                closestDistance = distance;
+                closestTrash = trash;
             }
-            return closestTrash;
         }
+        return closestTrash;
+    }
 
-        Vector3 direction;
-        Transform closestTrash = GetClosestTrash();
-        
-
-
-        if (closestTrash != null)
+    private void Move(Vector3 direction)
+    {
+        if (direction != null)
         {
-            direction = closestTrash.position - transform.position;
+            direction = direction - transform.position;
             direction.y = 0f;
 
             if (direction != Vector3.zero)
@@ -85,7 +93,5 @@ public class Minion : MonoBehaviour
                 rigidbody.AddRelativeForce(Vector3.left * dodgeForce, ForceMode.Impulse);
             }
         }
-        //if ()
-
     }
 }
