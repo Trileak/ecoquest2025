@@ -38,19 +38,27 @@ public class Minion : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 direction;
-        Transform closestTrash = null;
-        float closestDistance = Mathf.Infinity;
 
-        foreach (Transform trash in trashTransforms)
+        Transform GetClosestTrash()
         {
-            float distance = Vector3.Distance(transform.position, trash.position);
-            if (distance < closestDistance)
+            Transform closestTrash = null;
+            float closestDistance = Mathf.Infinity;
+            foreach (Transform trash in trashTransforms)
             {
-                closestDistance = distance;
-                closestTrash = trash;
+                float distance = Vector3.Distance(transform.position, trash.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestTrash = trash;
+                }
             }
+            return closestTrash;
         }
+
+        Vector3 direction;
+        Transform closestTrash = GetClosestTrash();
+        
+
 
         if (closestTrash != null)
         {
@@ -63,6 +71,7 @@ public class Minion : MonoBehaviour
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
             }
         }
+
         if (rigidbody.velocity.x < 10f)
         {
             // Move forward
@@ -77,5 +86,6 @@ public class Minion : MonoBehaviour
             }
         }
         //if ()
+
     }
 }
