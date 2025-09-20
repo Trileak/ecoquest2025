@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
     {
         playerRigidBody    = GetComponent<Rigidbody>();
         playerInputActions = new PlayerInputActions();
+        DontDestroyOnLoad(gameObject);
     }
 
     private void FixedUpdate()
@@ -61,21 +62,18 @@ public class Player : MonoBehaviour
         SceneManager.LoadScene("Shop", LoadSceneMode.Additive);
         Time.timeScale = 0f;
         playerInputActions.Player.Disable();
-        playerInputActions.Shop.Enable();
-        playerInputActions.Shop.Exit.performed += ExitPerformed;
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible   = true;
+        Cursor.visible = true;
+
     }
 
     private void ExitPerformed(InputAction.CallbackContext obj)
     {
-        SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
+        SceneManager.UnloadSceneAsync("Shop");
         Time.timeScale = 1f;
         playerInputActions.Player.Enable();
-        playerInputActions.Shop.Exit.performed -= ExitPerformed;
-        playerInputActions.Shop.Disable();
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible   = false;
+        Cursor.visible = false;
     }
 
     private void OnDisable()
@@ -150,5 +148,10 @@ public class Player : MonoBehaviour
     public Vector2 GetMouseMovement()
     {
         return mouseMovement;
+    }
+
+    public PlayerInputActions GetInputActions()
+    {
+        return playerInputActions;
     }
 }

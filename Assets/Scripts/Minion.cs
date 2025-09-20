@@ -36,8 +36,11 @@ public class Minion : MonoBehaviour
 
         if (other.gameObject.name == "Trash Can")
         {
-            trash.Drop();
-            pickedUpTrash = false;
+            if (trash != null)
+            {
+                trash.Drop();
+                pickedUpTrash = false;
+            }
         }
 
         if (!other.gameObject.CompareTag("Floor"))
