@@ -23,13 +23,9 @@ public class ExitButton : MonoBehaviour
     private void OnButtonPressed()
     {
         SceneManager.UnloadSceneAsync("Shop");
-        Time.timeScale = 1f;
-        if (playerReference != null)
-        {
-            Debug.Log(playerReference);
-            var inputActions = playerReference.GetInputActions();
-            inputActions.Player.Enable();
-        }
+        Time.timeScale = 1f; 
+        var inputActions = playerReference?.GetInputActions(); 
+        inputActions.Player.Enable();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
