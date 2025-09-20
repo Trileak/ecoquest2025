@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -5,20 +7,21 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    private Rigidbody playerRigidBody;               // Player rigid body (adds physics)
-    private PlayerInputActions playerInputActions;   // Player input actions
-    private bool floorCollision;                     // Floor check
-    private int jumpCount;                           // Double jump check
-    private Vector2 mouseMovement;                   // Movement of mouse (to add camera movement)
-    private Trash itemHeld;                // The script of the item held
+    private Rigidbody playerRigidBody;                  // Player rigid body (adds physics)
+    private PlayerInputActions playerInputActions;      // Player input actions
+    private bool floorCollision;                        // Floor check
+    private int jumpCount;                              // Double jump check
+    private Vector2 mouseMovement;                      // Movement of mouse (to add camera movement)
+    private List<Trash> itemsHeld = new List<Trash> {}; // The script of the item held
 
-    [SerializeField] private float mouseSensitivity;         // Sensitivity of the mouse
-    [SerializeField] private float jumpForce        = 5f;    // The jump force
-    [SerializeField] private float speed            = 10f;   // Movement speed
-    [SerializeField] private float interactDistance = 2f;    // Interact distance
-    [SerializeField] private Transform cameraTransform;      // The camera transform (for interacting stuff)
-    [SerializeField] private LayerMask pickUpLayerMask;
-    [SerializeField] private Transform objectGrabPointTransform;
+    [SerializeField] private float mouseSensitivity;             // Sensitivity of the mouse
+    [SerializeField] private float jumpForce        = 5f;        // The jump force
+    [SerializeField] private float speed            = 10f;       // Movement speed
+    [SerializeField] private float interactDistance = 2f;        // Interact distance
+    [SerializeField] private Transform cameraTransform;          // The camera transform (for interacting stuff)
+    [SerializeField] private LayerMask pickUpLayerMask;          // The pickup layer mask
+    [SerializeField] private Transform objectGrabPointTransform; // The transform of the grab point
+    [SerializeField] private int grabAmount;                     // The amount that can be grabbed
     
     private void Start()
     {
@@ -92,16 +95,20 @@ public class Player : MonoBehaviour
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit raycastHit, interactDistance, pickUpLayerMask)) {
                 if (raycastHit.transform.TryGetComponent(out Trash trash))
                 { // And has the component objectGrabbable ^^^
-                    trash.Grab(objectGrabPointTransform); // Call the grab function with the grab point
-                    itemHeld = trash; // And put it as the item held
+                    if (itemsHeld.Count < grabAmount)
+                    {
+                        trash.Grab(objectGrabPointTransform); // Call the grab function with the grab point
+                        itemsHeld.Add(trash); // And put it as the item held}
+                    }
                 }
             }
         }
         else // If Q is pressed (or right mouse button)
         {
-            if (itemHeld)
+            if (itemsHeld.Count != 0)
             {
-                itemHeld.Drop();
+                itemsHeld[0].Drop();
+                itemsHeld.RemoveAt(0);
             }
         }
     }

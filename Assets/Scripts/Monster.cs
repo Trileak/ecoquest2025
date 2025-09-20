@@ -8,7 +8,7 @@ public class Monster : MonoBehaviour
     private bool isGrounded = false;
 
     [SerializeField] private float moveForce     = 1f;
-    [SerializeField] private float rotationSpeed = 5f;
+    [SerializeField] private float rotationSpeed = 2f;
     [SerializeField] private float jumpForce     = 2f;
     [SerializeField] private float jumpCooldown  = 2f;
     private float jumpTimer = 0f;
