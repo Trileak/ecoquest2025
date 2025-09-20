@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+
 
 public class Player : MonoBehaviour
 {
@@ -56,7 +58,24 @@ public class Player : MonoBehaviour
 
     private void CraftPerformed(InputAction.CallbackContext obj)
     {
-        throw new System.NotImplementedException();
+        SceneManager.LoadScene("Shop", LoadSceneMode.Additive);
+        Time.timeScale = 0f;
+        playerInputActions.Player.Disable();
+        playerInputActions.Shop.Enable();
+        playerInputActions.Shop.Exit.performed += ExitPerformed;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible   = true;
+    }
+
+    private void ExitPerformed(InputAction.CallbackContext obj)
+    {
+        SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
+        Time.timeScale = 1f;
+        playerInputActions.Player.Enable();
+        playerInputActions.Shop.Exit.performed -= ExitPerformed;
+        playerInputActions.Shop.Disable();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible   = false;
     }
 
     private void OnDisable()

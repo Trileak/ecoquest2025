@@ -340,8 +340,30 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         {
             ""name"": ""Shop"",
             ""id"": ""a7ce4783-330f-44b0-ad82-076cfc4f168f"",
-            ""actions"": [],
-            ""bindings"": []
+            ""actions"": [
+                {
+                    ""name"": ""Exit"",
+                    ""type"": ""Button"",
+                    ""id"": ""289b750a-d889-4310-9785-d2515347e07f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""088e952c-3a09-4535-adb5-bdf67099e1c8"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -356,6 +378,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Place = m_Player.FindAction("Place", throwIfNotFound: true);
         // Shop
         m_Shop = asset.FindActionMap("Shop", throwIfNotFound: true);
+        m_Shop_Exit = m_Shop.FindAction("Exit", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -588,6 +611,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     // Shop
     private readonly InputActionMap m_Shop;
     private List<IShopActions> m_ShopActionsCallbackInterfaces = new List<IShopActions>();
+    private readonly InputAction m_Shop_Exit;
     /// <summary>
     /// Provides access to input actions defined in input action map "Shop".
     /// </summary>
@@ -599,6 +623,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
         public ShopActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "Shop/Exit".
+        /// </summary>
+        public InputAction @Exit => m_Wrapper.m_Shop_Exit;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -625,6 +653,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_ShopActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_ShopActionsCallbackInterfaces.Add(instance);
+            @Exit.started += instance.OnExit;
+            @Exit.performed += instance.OnExit;
+            @Exit.canceled += instance.OnExit;
         }
 
         /// <summary>
@@ -636,6 +667,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="ShopActions" />
         private void UnregisterCallbacks(IShopActions instance)
         {
+            @Exit.started -= instance.OnExit;
+            @Exit.performed -= instance.OnExit;
+            @Exit.canceled -= instance.OnExit;
         }
 
         /// <summary>
@@ -726,5 +760,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     /// <seealso cref="ShopActions.RemoveCallbacks(IShopActions)" />
     public interface IShopActions
     {
+        /// <summary>
+        /// Method invoked when associated input action "Exit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnExit(InputAction.CallbackContext context);
     }
 }
