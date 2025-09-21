@@ -24,6 +24,6 @@ public class Spawner : MonoBehaviour
             UnityEngine.Random.Range(-spawnRange, spawnRange)
         );
         
-        trashTracker.AddTrash(Instantiate(trash, randomPosition, Quaternion.identity).transform);
+        trashTracker?.AddTrash(Instantiate(trash, randomPosition, Quaternion.identity).transform);
     }
 }

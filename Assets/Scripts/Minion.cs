@@ -7,17 +7,17 @@ public class Minion : MonoBehaviour
     private List<Transform> trashTransforms;
     private TrashTracker trashTracker;
     private Rigidbody rigidbody;
-    private bool isColliding = false;
+    private bool isColliding   = false;
     private bool pickedUpTrash = false;
     private Trash trash;
     private Player player;
     private bool isHeld;
+    private Vector3 trashCan = new Vector3(2, 1, 10);
     
     [SerializeField] private float rotationSpeed = 5f;
     [SerializeField] private float moveForce     = 1f;
     [SerializeField] private float dodgeForce    = 1f;
     [SerializeField] private Transform objectGrabPoint;
-    [SerializeField] private Transform trashCan;
 
     private void Awake()
     {
@@ -33,6 +33,7 @@ public class Minion : MonoBehaviour
         {
             other.gameObject.transform.TryGetComponent(out trash);
             trash.Grab(objectGrabPoint);
+            trashTracker.HoldTrashTransform(trash.transform);
             pickedUpTrash = true;
         }
 
@@ -41,6 +42,7 @@ public class Minion : MonoBehaviour
             if (trash != null)
             {
                 trash.Drop();
+                trashTracker.DropTrashTransform(trash.transform);
                 pickedUpTrash = false;
             }
         }
@@ -75,7 +77,7 @@ public class Minion : MonoBehaviour
             }
             else
             {
-                Move(trashCan.position);
+                Move(trashCan);
             }
         }
         else

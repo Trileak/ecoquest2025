@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class TrashTracker : MonoBehaviour
 {
-    private List<Transform> trashTransforms = new List<Transform>();
-    private List<GameObject> trackerObjects = new List<GameObject>();
+    private List<Transform> trashTransforms;
+    private List<GameObject> trackerObjects;
     private Player player;
 
     [SerializeField] private GameObject trackerImagePrefab;
@@ -16,6 +16,8 @@ public class TrashTracker : MonoBehaviour
     private void Awake()
     {
         player = FindObjectOfType<Player>();
+        trashTransforms = new List<Transform>();
+        trackerObjects = new List<GameObject>();
     }
 
     private float GetAngleOfTrash(Transform trashTransform)
@@ -30,12 +32,12 @@ public class TrashTracker : MonoBehaviour
     
     private void UpdateTrackers()
     {
-        for (int i = 0; i < trashTransforms.Count; i++)
+        for (int i = 0; i < trashTransforms?.Count; i++)
         {
             float angle = GetAngleOfTrash(trashTransforms[i]) * 2; // Range: -180 to 180 * 2 for both
 
             Vector3 trackerPos = trackerObjects[i].transform.position;
-            trackerPos.x = angle + Screen.width / 2; // Offset to 
+            trackerPos.x = angle + Screen.width / 2; // Offset to middle of the screen
             trackerObjects[i].transform.position = trackerPos; 
         }
     }
@@ -53,8 +55,8 @@ public class TrashTracker : MonoBehaviour
     
     public void AddTrash(Transform trash)
     {
-        trashTransforms.Add(trash);
-        trackerObjects.Add(Instantiate(trackerImagePrefab, trackerImageParent.transform));
+        trashTransforms?.Add(trash);
+        trackerObjects?.Add(Instantiate(trackerImagePrefab, trackerImageParent.transform));
     }
 
     public void DeleteTrash(Transform trash)
@@ -80,5 +82,21 @@ public class TrashTracker : MonoBehaviour
     public List<Transform> GetTrashTransforms()
     {
         return trashTransforms;
+    }
+    
+    public void HoldTrashTransform(Transform trashTransform)
+    {
+        if (trashTransforms.IndexOf(trashTransform) != -1)
+        {
+            trackerObjects[trashTransforms.IndexOf(trashTransform)].transform.localScale *= 0.5f;
+        }
+    }
+
+    public void DropTrashTransform(Transform trashTransform)
+    {
+        if (trashTransforms.IndexOf(trashTransform) != -1)
+        {
+            trackerObjects[trashTransforms.IndexOf(trashTransform)].transform.localScale *= 2f;
+        }
     }
 }

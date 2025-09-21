@@ -7,13 +7,14 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    private Rigidbody playerRigidBody;                       // Player rigid body (adds physics)
-    private PlayerInputActions playerInputActions;           // Player input actions
-    private bool floorCollision;                             // Floor check
-    private int jumpCount;                                   // Double jump check
-    private Vector2 mouseMovement;                           // Movement of mouse (to add camera movement)
-    private List<Trash> itemsHeld = new List<Trash> {};      // The script of the item held
-    private List<GameObject> items = new List<GameObject>(); // Minion, walls, distraction
+    private Rigidbody playerRigidBody;             // Player rigid body (adds physics)
+    private PlayerInputActions playerInputActions; // Player input actions
+    private bool floorCollision;                   // Floor check
+    private int jumpCount;                         // Double jump check
+    private Vector2 mouseMovement;                 // Movement of mouse (to add camera movement)
+    private List<Trash> itemsHeld;                 // The script of the item held
+    private List<GameObject> items;                // Minion, walls, distraction
+    private TrashTracker trashTracker;             // The trash tracker
 
     [SerializeField] private float mouseSensitivity;             // Sensitivity of the mouse
     [SerializeField] private float jumpForce        = 5f;        // The jump force
@@ -34,6 +35,10 @@ public class Player : MonoBehaviour
     {
         playerRigidBody    = GetComponent<Rigidbody>();
         playerInputActions = new PlayerInputActions();
+        trashTracker       = FindObjectOfType<TrashTracker>();
+        itemsHeld          = new List<Trash>();
+        items              = new List<GameObject>();
+
         DontDestroyOnLoad(gameObject);
     }
 
@@ -41,8 +46,8 @@ public class Player : MonoBehaviour
     {
         Vector2 input2D    = playerInputActions.Player.Movement.ReadValue<Vector2>();
         playerRigidBody.AddRelativeForce(new Vector3(input2D.x, 0, input2D.y) * speed, ForceMode.Force);   // Adds force
-        playerRigidBody.linearDamping        = 0f;                                             // Linear drag
-        playerRigidBody.angularDamping = 0.05f;                                          // Rotational drag
+        playerRigidBody.linearDamping        = 0f;                                                        // Linear drag
+        playerRigidBody.angularDamping       = 0.05f;                                                 // Rotational drag
     }
 
     private void OnEnable()
@@ -100,10 +105,11 @@ public class Player : MonoBehaviour
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit raycastHit, interactDistance, pickUpLayerMask)) {
                 if (raycastHit.transform.TryGetComponent(out Trash trash))
                 { // And has the component objectGrabbable ^^^
-                    if (itemsHeld.Count < grabAmount)
+                    if (itemsHeld?.Count < grabAmount)
                     {
                         trash.Grab(objectGrabPointTransform); // Call the grab function with the grab point
-                        itemsHeld.Add(trash); // And put it as the item held}
+                        itemsHeld.Add(trash); // And put it as the item held
+                        trashTracker.HoldTrashTransform(trash.transform);
                     }
                 }
             }
@@ -113,6 +119,7 @@ public class Player : MonoBehaviour
             if (itemsHeld.Count != 0)
             {
                 itemsHeld[0].Drop();
+                trashTracker.DropTrashTransform(itemsHeld[0].transform);
                 itemsHeld.RemoveAt(0);
             }
         }
