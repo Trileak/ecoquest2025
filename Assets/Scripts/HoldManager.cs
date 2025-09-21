@@ -11,25 +11,32 @@ public class HoldManager : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
     }
 
-    public void OnBought()
+    public void OnBought(Transform grabPoint)
     {
-        rigidbody.useGravity  = false;                           // Stop using gravity 
-        rigidbody.isKinematic = true;                            // Stop using the rigidbody
-        isHeld                = true;                            // Become held
-        transform.localScale *= 0.5f;                            // Make self smaller
-        Collider component = GetComponentInChildren<Collider>(); // Gets collider then disables it if not null
+        transform.SetParent(grabPoint); // Attach to grab point
+        transform.localPosition = Vector3.zero; // Snap to grab point
+        rigidbody.useGravity = false;
+        rigidbody.isKinematic = true;
+        isHeld = true;
+        transform.localScale *= 0.125f;
+
+        Collider component = GetComponentInChildren<Collider>();
         if (component != null) component.enabled = false;
     }
 
+
     public void Drop()
     {
-        rigidbody.isKinematic = false;                           // Start using the rigidbody
-        rigidbody.useGravity  = true;                            // Start using gravity
-        isHeld                = false;                           // Start being held
-        transform.localScale *= 2f;                            // Make self bigger
-        Collider component = GetComponentInChildren<Collider>(); // Gets collider then enables it if not null
+        transform.SetParent(null); // Detach from grab point
+        rigidbody.isKinematic = false;
+        rigidbody.useGravity = true;
+        isHeld = false;
+        transform.localScale *= 8f;
+
+        Collider component = GetComponentInChildren<Collider>();
         if (component != null) component.enabled = true;
     }
+
 
     public bool IsHeld()
     {

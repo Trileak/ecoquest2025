@@ -2,15 +2,25 @@ using UnityEngine;
 
 public class Walls : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
+    private HoldManager holdManager;
+    private Transform objectHoldTransform;
+    private Player player;
+    private Rigidbody rigidbody;
         
+    private void Awake()
+    {
+        holdManager         = GetComponent<HoldManager>();
+        player              = FindObjectOfType<Player>();
+        objectHoldTransform = player.GetGrabPointTransform();
+        rigidbody           = GetComponent<Rigidbody>();
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    private void FixedUpdate()
     {
-        
+        if (holdManager.IsHeld())
+        {
+            objectHoldTransform = player.GetGrabPointTransform();
+            rigidbody.MovePosition(objectHoldTransform.position);
+        }
     }
 }

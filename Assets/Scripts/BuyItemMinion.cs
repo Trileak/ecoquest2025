@@ -23,7 +23,7 @@ public class BuyItem : MonoBehaviour
         {
             trashcan?.RemoveTrashThrownCount(10);
             GameObject minion = Instantiate(minionPrefab, transform.position, Quaternion.identity);
-            minion.GetComponent<HoldManager>()?.OnBought();
+            minion.GetComponent<HoldManager>()?.OnBought(player.GetGrabPointTransform());
             player.AddGameObject(minion);
         }
     }

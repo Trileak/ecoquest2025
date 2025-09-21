@@ -41,7 +41,7 @@ public class Trash : MonoBehaviour
         objectRigidbody.isKinematic = false; // Start using the rigidbody
         objectRigidbody.useGravity  = true;  // Start using gravity
         isHeld                      = false; // Start being held
-        foreach (Transform child in gameObject.transform) // Same as line 22 but turns *off* the collider
+        foreach (Transform child in gameObject.transform) // Same as line 22 but turns *on* the collider
         {
             Collider collider = child.GetComponent<Collider>();
             if (collider != null)

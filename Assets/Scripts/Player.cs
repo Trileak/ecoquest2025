@@ -63,9 +63,12 @@ public class Player : MonoBehaviour
 
     private void PlacePerformed(InputAction.CallbackContext obj)
     {
-        items[0].TryGetComponent<HoldManager>(out HoldManager holdManager);
-        holdManager.Drop();
-        items.RemoveAt(0);
+        if (items.Count > 0)
+        {
+            items[0].TryGetComponent<HoldManager>(out HoldManager holdManager);
+            holdManager.Drop();
+            items.RemoveAt(0);
+        }
     }
 
     private void CraftPerformed(InputAction.CallbackContext obj)
@@ -100,7 +103,7 @@ public class Player : MonoBehaviour
 
     private void HoldPerformed(InputAction.CallbackContext context)
     {
-        if (context.ReadValue<float>() == 1) // If E is pressed (or left mouse button)
+        if (context.ReadValue<float>() == 1) // If left mouse button pressed
         { // If something is in front of the camera vvv
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit raycastHit, interactDistance, pickUpLayerMask)) {
                 if (raycastHit.transform.TryGetComponent(out Trash trash))
@@ -114,7 +117,7 @@ public class Player : MonoBehaviour
                 }
             }
         }
-        else // If Q is pressed (or right mouse button)
+        else // If right mouse button pressed
         {
             if (itemsHeld.Count != 0)
             {

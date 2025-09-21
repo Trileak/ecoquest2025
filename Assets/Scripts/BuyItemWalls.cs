@@ -1,16 +1,38 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class BuyItemWalls : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private Player player;
+    
+    [SerializeField] private Button myButton;
+    [SerializeField] private Trashcan trashcan;
+    [SerializeField] private GameObject wallsPrefab;
+
     void Start()
     {
-        
+        trashcan = FindObjectOfType<Trashcan>();
+        player = GameObject.Find("Player")?.GetComponent<Player>();
+        myButton?.onClick.AddListener(HandleClick);
     }
 
-    // Update is called once per frame
-    void Update()
+    void HandleClick()
     {
-        
+        if (trashcan == null || player == null)
+        {
+            Debug.LogWarning("Missing reference to Trashcan or Player.");
+            return;
+        }
+
+        if (trashcan.TrashThrownCount() >= 2)
+        {
+            GameObject walls = Instantiate(wallsPrefab, player.GetGrabPointTransform().position, Quaternion.identity);
+            walls.GetComponent<HoldManager>()?.OnBought(player.GetGrabPointTransform());
+            player.AddGameObject(walls);
+            trashcan.RemoveTrashThrownCount(2);
+        }
     }
+
 }
