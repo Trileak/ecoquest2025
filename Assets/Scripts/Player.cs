@@ -7,12 +7,13 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    private Rigidbody playerRigidBody;                  // Player rigid body (adds physics)
-    private PlayerInputActions playerInputActions;      // Player input actions
-    private bool floorCollision;                        // Floor check
-    private int jumpCount;                              // Double jump check
-    private Vector2 mouseMovement;                      // Movement of mouse (to add camera movement)
-    private List<Trash> itemsHeld = new List<Trash> {}; // The script of the item held
+    private Rigidbody playerRigidBody;                       // Player rigid body (adds physics)
+    private PlayerInputActions playerInputActions;           // Player input actions
+    private bool floorCollision;                             // Floor check
+    private int jumpCount;                                   // Double jump check
+    private Vector2 mouseMovement;                           // Movement of mouse (to add camera movement)
+    private List<Trash> itemsHeld = new List<Trash> {};      // The script of the item held
+    private List<GameObject> items = new List<GameObject>(); // Minion, walls, distraction
 
     [SerializeField] private float mouseSensitivity;             // Sensitivity of the mouse
     [SerializeField] private float jumpForce        = 5f;        // The jump force
@@ -40,16 +41,16 @@ public class Player : MonoBehaviour
     {
         Vector2 input2D    = playerInputActions.Player.Movement.ReadValue<Vector2>();
         playerRigidBody.AddRelativeForce(new Vector3(input2D.x, 0, input2D.y) * speed, ForceMode.Force);   // Adds force
-        playerRigidBody.drag        = 0f;                                             // Linear drag
-        playerRigidBody.angularDrag = 0.05f;                                          // Rotational drag
+        playerRigidBody.linearDamping        = 0f;                                             // Linear drag
+        playerRigidBody.angularDamping = 0.05f;                                          // Rotational drag
     }
 
     private void OnEnable()
     {
         playerInputActions.Player.Enable();                                // Enables the player
         playerInputActions.Player.Jump.performed     += JumpPerformed;     // }
-        playerInputActions.Player.Movement.performed += MovementPerformed; // } Add subscribers to the events
-        playerInputActions.Player.Look.performed     += LookPerformed;     // }
+        playerInputActions.Player.Movement.performed += MovementPerformed; // } 
+        playerInputActions.Player.Look.performed     += LookPerformed;     // } Add subscribers to the events
         playerInputActions.Player.Hold.performed     += HoldPerformed;     // }
         playerInputActions.Player.Craft.performed    += CraftPerformed;    // }
         playerInputActions.Player.Place.performed    += PlacePerformed;    // }
@@ -57,7 +58,8 @@ public class Player : MonoBehaviour
 
     private void PlacePerformed(InputAction.CallbackContext obj)
     {
-        throw new System.NotImplementedException();
+        items[0].TryGetComponent<HoldManager>(out HoldManager holdManager);
+        holdManager.Drop();
     }
 
     private void CraftPerformed(InputAction.CallbackContext obj)
@@ -81,8 +83,10 @@ public class Player : MonoBehaviour
 
     private void OnDisable()
     {
-        playerInputActions.Player.Jump.performed     -= JumpPerformed;     // } 
-        playerInputActions.Player.Movement.performed -= MovementPerformed; // } Removes subscribers to the events
+        playerInputActions.Player.Place.performed    -= PlacePerformed;    // }
+        playerInputActions.Player.Craft.performed    -= CraftPerformed;    // }
+        playerInputActions.Player.Jump.performed     -= JumpPerformed;     // } Removes subscribers to the events
+        playerInputActions.Player.Movement.performed -= MovementPerformed; // } 
         playerInputActions.Player.Look.performed     -= LookPerformed;     // }
         playerInputActions.Player.Hold.performed     -= HoldPerformed;     // }
         playerInputActions.Player.Disable();                               // Disables the player
@@ -165,5 +169,10 @@ public class Player : MonoBehaviour
     public Transform GetGrabPointTransform()
     {
         return objectGrabPointTransform;
+    }
+
+    public void AddGameObject(GameObject obj)
+    {
+        items.Add(obj);
     }
 }

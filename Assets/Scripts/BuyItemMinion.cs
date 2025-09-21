@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class BuyItem : MonoBehaviour
 {
+    private Player player;
+    
     [SerializeField] private Button myButton;
     [SerializeField] private Trashcan trashcan;
     [SerializeField] private GameObject minionPrefab;
@@ -12,17 +14,17 @@ public class BuyItem : MonoBehaviour
     {
         myButton?.onClick.AddListener(HandleClick);
         trashcan = FindObjectOfType<Trashcan>();
+        player   = FindObjectOfType<Player>();
     }
 
     void HandleClick()
     {
-        Debug.Log("18");
         if (trashcan?.TrashThrownCount() >= 10)
         {
-            Debug.Log("21");
             trashcan?.RemoveTrashThrownCount(10);
             GameObject minion = Instantiate(minionPrefab, transform.position, Quaternion.identity);
-            minion.GetComponent<Minion>()?.OnBought();
+            minion.GetComponent<HoldManager>()?.OnBought();
+            player.AddGameObject(minion);
         }
     }
 }
