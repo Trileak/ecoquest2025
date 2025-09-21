@@ -123,7 +123,6 @@ GameObject:
   - component: {fileID: 4563361671449542273}
   - component: {fileID: 323105589604434130}
   - component: {fileID: 8688388652507150103}
-  - component: {fileID: 680749742653452071}
   - component: {fileID: -893965077601758118}
   m_Layer: 0
   m_Name: Minion
@@ -192,27 +191,6 @@ MonoBehaviour:
   dodgeForce: 1
   objectGrabPoint: {fileID: 6204434599953747878}
   trashCan: {fileID: 0}
---- !u!65 &680749742653452071
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8856831073890952307}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-893965077601758118
 MonoBehaviour:
   m_ObjectHideFlags: 0

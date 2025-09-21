@@ -8,25 +8,25 @@ public class HoldManager : MonoBehaviour
 
     private void Awake()
     {
-        rigidbody     = GetComponent<Rigidbody>();
+        rigidbody = GetComponent<Rigidbody>();
     }
 
     public void OnBought()
     {
-        rigidbody.useGravity  = false;                     // Stop using gravity 
-        rigidbody.isKinematic = true;                      // Stop using the rigidbody
-        isHeld                = true;                      // Become held
-        transform.localScale *= 0.5f;                      // Make self smaller
-        var component = GetComponent<Collider>();          // Checks if collider is null
+        rigidbody.useGravity  = false;                           // Stop using gravity 
+        rigidbody.isKinematic = true;                            // Stop using the rigidbody
+        isHeld                = true;                            // Become held
+        transform.localScale *= 0.5f;                            // Make self smaller
+        Collider component = GetComponentInChildren<Collider>(); // Gets collider then disables it if not null
         if (component != null) component.enabled = false;
     }
 
     public void Drop()
     {
-        rigidbody.isKinematic = false;                     // Start using the rigidbody
-        rigidbody.useGravity  = true;                      // Start using gravity
-        isHeld                = false;                     // Start being held
-        var component = GetComponent<Collider>();
+        rigidbody.isKinematic = false;                           // Start using the rigidbody
+        rigidbody.useGravity  = true;                            // Start using gravity
+        isHeld                = false;                           // Start being held
+        Collider component = GetComponentInChildren<Collider>(); // Gets collider then enables it if not null
         if (component != null) component.enabled = true;
     }
 

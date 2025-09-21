@@ -60,6 +60,7 @@ public class Player : MonoBehaviour
     {
         items[0].TryGetComponent<HoldManager>(out HoldManager holdManager);
         holdManager.Drop();
+        items.RemoveAt(0);
     }
 
     private void CraftPerformed(InputAction.CallbackContext obj)

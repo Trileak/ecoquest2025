@@ -61,8 +61,8 @@ public class Minion : MonoBehaviour
     
     private void FixedUpdate()
     {
-        TryGetComponent<HoldManager>(out HoldManager holdmanager);
-        isHeld =  holdmanager.IsHeld();
+        TryGetComponent<HoldManager>(out HoldManager holdManager);
+        isHeld =  holdManager.IsHeld();
         if (!isHeld) 
         {
             if (!pickedUpTrash)
