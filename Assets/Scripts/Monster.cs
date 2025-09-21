@@ -6,11 +6,13 @@ public class Monster : MonoBehaviour
     private Transform player;
     private Rigidbody rigidbody;
     private bool isGrounded = false;
+    private bool canMove = true; // Movement toggle
 
     [SerializeField] private float moveForce     = 1f;
     [SerializeField] private float rotationSpeed = 2f;
     [SerializeField] private float jumpForce     = 2f;
     [SerializeField] private float jumpCooldown  = 2f;
+    [SerializeField] private float pauseTime     = 5f;
     private float jumpTimer = 0f;
 
     private void Awake()
@@ -25,6 +27,13 @@ public class Monster : MonoBehaviour
         {
             isGrounded = true;
         }
+
+        if (other.gameObject.name.Contains("Wall"))
+        {
+            Destroy(other.gameObject);
+            canMove = false; // Pause movement
+            Debug.Log("Argh!");
+        }
     }
 
     private void OnCollisionExit(Collision other)
@@ -37,6 +46,22 @@ public class Monster : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Debug.Log(pauseTime);
+        if (pauseTime <= 0)
+        {
+            canMove = true;
+            pauseTime = 5f;
+        }
+        else if  (pauseTime > 0 && !canMove)
+        {
+            pauseTime -= Time.fixedDeltaTime;
+        }
+        else
+        {
+            pauseTime = 5f;
+        }
+        if (!canMove) return; // Skip movement if paused
+
         jumpTimer += Time.fixedDeltaTime;
 
         Vector3 direction = player.position - transform.position;

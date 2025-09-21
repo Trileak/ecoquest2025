@@ -1570,6 +1570,7 @@ MonoBehaviour:
   rotationSpeed: 5
   jumpForce: 10
   jumpCooldown: 2
+  pauseTime: 5
 --- !u!1001 &2084969890
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1789,6 +1790,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b12867b4a950eb84e8f76d231c2fac5f, type: 3}
+--- !u!1001 &4332878365367558065
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8158690786802238255, guid: 27dd28c8ee03676489ce4c8bd9d81112, type: 3}
+      propertyPath: m_Name
+      value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376779554572524913, guid: 27dd28c8ee03676489ce4c8bd9d81112, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -6.64008
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376779554572524913, guid: 27dd28c8ee03676489ce4c8bd9d81112, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.631
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376779554572524913, guid: 27dd28c8ee03676489ce4c8bd9d81112, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 18.00009
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376779554572524913, guid: 27dd28c8ee03676489ce4c8bd9d81112, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376779554572524913, guid: 27dd28c8ee03676489ce4c8bd9d81112, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376779554572524913, guid: 27dd28c8ee03676489ce4c8bd9d81112, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376779554572524913, guid: 27dd28c8ee03676489ce4c8bd9d81112, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376779554572524913, guid: 27dd28c8ee03676489ce4c8bd9d81112, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376779554572524913, guid: 27dd28c8ee03676489ce4c8bd9d81112, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8376779554572524913, guid: 27dd28c8ee03676489ce4c8bd9d81112, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 27dd28c8ee03676489ce4c8bd9d81112, type: 3}
 --- !u!1001 &4738075705385743904
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1860,15 +1918,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4508772511188751283, guid: 9f2ebf71582c2314e988f3af915772e7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.222
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4508772511188751283, guid: 9f2ebf71582c2314e988f3af915772e7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.9131987
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4508772511188751283, guid: 9f2ebf71582c2314e988f3af915772e7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.29306
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4508772511188751283, guid: 9f2ebf71582c2314e988f3af915772e7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1902,6 +1960,10 @@ PrefabInstance:
       propertyPath: game
       value: 
       objectReference: {fileID: 1475183547}
+    - target: {fileID: 6704060376795145597, guid: 9f2ebf71582c2314e988f3af915772e7, type: 3}
+      propertyPath: trashThrownCount
+      value: 99
+      objectReference: {fileID: 0}
     - target: {fileID: 7084840002503641416, guid: 9f2ebf71582c2314e988f3af915772e7, type: 3}
       propertyPath: m_Name
       value: Trash Can
@@ -1931,3 +1993,4 @@ SceneRoots:
   - {fileID: 1239830260}
   - {fileID: 1931833260}
   - {fileID: 1475183549}
+  - {fileID: 4332878365367558065}

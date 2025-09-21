@@ -72,4 +72,9 @@ public class Trash : MonoBehaviour
             Destroy(this.gameObject); // Destroy this game object
         }
     }
+
+    public bool IsHeld()
+    {
+        return isHeld;
+    }
 }

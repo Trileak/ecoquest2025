@@ -88,7 +88,7 @@ public class TrashTracker : MonoBehaviour
     {
         if (trashTransforms.IndexOf(trashTransform) != -1)
         {
-            trackerObjects[trashTransforms.IndexOf(trashTransform)].transform.localScale *= 0.5f;
+            trackerObjects[trashTransforms.IndexOf(trashTransform)].transform.localScale = new Vector3(1, 0.5f, 1);
         }
     }
 
@@ -96,7 +96,7 @@ public class TrashTracker : MonoBehaviour
     {
         if (trashTransforms.IndexOf(trashTransform) != -1)
         {
-            trackerObjects[trashTransforms.IndexOf(trashTransform)].transform.localScale *= 2f;
+            trackerObjects[trashTransforms.IndexOf(trashTransform)].transform.localScale = new Vector3(1, 1, 1);
         }
     }
 }

@@ -26,6 +26,7 @@ public class HoldManager : MonoBehaviour
         rigidbody.isKinematic = false;                           // Start using the rigidbody
         rigidbody.useGravity  = true;                            // Start using gravity
         isHeld                = false;                           // Start being held
+        transform.localScale *= 2f;                            // Make self bigger
         Collider component = GetComponentInChildren<Collider>(); // Gets collider then enables it if not null
         if (component != null) component.enabled = true;
     }

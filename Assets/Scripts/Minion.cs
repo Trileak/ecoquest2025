@@ -90,17 +90,25 @@ public class Minion : MonoBehaviour
     {
         Transform closestTrash = null;
         float closestDistance = Mathf.Infinity;
-        foreach (Transform trash in trashTransforms)
+
+        foreach (Transform trashTransform in trashTracker.GetTrashTransforms())
         {
-            float distance = Vector3.Distance(transform.position, trash.position);
+            if (trashTransform == null) continue;
+
+            Trash trashComponent = trashTransform.GetComponent<Trash>();
+            if (trashComponent == null || trashComponent.IsHeld()) continue;
+
+            float distance = Vector3.Distance(transform.position, trashTransform.position);
             if (distance < closestDistance)
             {
                 closestDistance = distance;
-                closestTrash = trash;
+                closestTrash = trashTransform;
             }
         }
+
         return closestTrash;
     }
+
 
     private void Move(Vector3 targetPosition)
     {
