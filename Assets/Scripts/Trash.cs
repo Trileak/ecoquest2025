@@ -17,6 +17,7 @@ public class Trash : MonoBehaviour
         objectRigidbody = GetComponent<Rigidbody>();        // Get the rigidbody component
         trashTracker    = FindObjectOfType<TrashTracker>(); // Get the trashtracker object
         trashcan        = FindObjectOfType<Trashcan>();     // Get the trashcan object
+        DontDestroyOnLoad(gameObject);
     }
     
     public void Grab(Transform objectGrabPointTransform) // When grabbed

@@ -24,11 +24,17 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask pickUpLayerMask;          // The pickup layer mask
     [SerializeField] private Transform objectGrabPointTransform; // The transform of the grab point
     [SerializeField] private int grabAmount;                     // The amount that can be grabbed
-    
+
     private void Start()
+    { 
+        playerInputActions.Player.Disable();
+        Events.OnGameStart += EventsOnGameStart;
+    }
+
+    private void EventsOnGameStart()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible   = false;
+        playerInputActions.Player.Enable();
+        playerInputActions.Player.Look.performed += LookPerformed;
     }
 
     private void Awake()
@@ -54,8 +60,7 @@ public class Player : MonoBehaviour
     {
         playerInputActions.Player.Enable();                                // Enables the player
         playerInputActions.Player.Jump.performed     += JumpPerformed;     // }
-        playerInputActions.Player.Movement.performed += MovementPerformed; // } 
-        playerInputActions.Player.Look.performed     += LookPerformed;     // } Add subscribers to the events
+        playerInputActions.Player.Movement.performed += MovementPerformed; // } Add subscribers to the events
         playerInputActions.Player.Hold.performed     += HoldPerformed;     // }
         playerInputActions.Player.Craft.performed    += CraftPerformed;    // }
         playerInputActions.Player.Place.performed    += PlacePerformed;    // }

@@ -21,6 +21,11 @@ public class Walls : MonoBehaviour
         {
             objectHoldTransform = player.GetGrabPointTransform();
             rigidbody.MovePosition(objectHoldTransform.position);
+            Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
+            Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer, Vector3.up);
+            targetRotation *= Quaternion.Euler(0, -90f, 0);
+            rigidbody.MoveRotation(targetRotation);
         }
     }
+
 }

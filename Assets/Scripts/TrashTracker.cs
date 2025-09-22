@@ -34,6 +34,7 @@ public class TrashTracker : MonoBehaviour
     {
         for (int i = 0; i < trashTransforms?.Count; i++)
         {
+            Debug.Log(trashTransforms[i]);
             float angle = GetAngleOfTrash(trashTransforms[i]) * 2; // Range: -180 to 180 * 2 for both
 
             Vector3 trackerPos = trackerObjects[i].transform.position;
