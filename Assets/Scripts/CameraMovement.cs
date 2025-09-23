@@ -1,39 +1,22 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    private Player player;
-    private float rotationX;
-    private float rotationY;
+    private Player player;      // The player
+    private float cameraY = 0f; // Tracks vertical rotation
 
     private void Start()
     {
-        player = FindObjectOfType<Player>();
-        rotationX = player.transform.position.x;
-        rotationY = player.transform.position.y;
+        player = FindObjectOfType<Player>(); // Finds player
     }
 
     private void Update()
     {
         Vector2 mouseMovement = player.GetMouseMovement();
-        if ((rotationX - mouseMovement.y / 40f >=90) || (rotationY - mouseMovement.y / 40f >=90))
-        {
-            if (rotationX < 0)
-            {
-                gameObject.transform.Rotate(-90, 0, 0);
-            }
-            else
-            {
-                gameObject.transform.Rotate(90, 0, 0);
-            }
-        }
-        else
-        {
-            gameObject.transform.Rotate(-mouseMovement.y/40f, 0, 0);
-        }
+        float mouseY = mouseMovement.y;
+        cameraY -= mouseY / 40f;
+        cameraY = Mathf.Clamp(cameraY, -90f, 90f); // Clamp between -90 and 90 degrees
+
+        transform.localEulerAngles = new Vector3(cameraY, 0f, 0f); // Applies rotation
     }
 }
-
