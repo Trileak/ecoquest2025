@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class Monster : MonoBehaviour
 {
-    private Transform player;
-    private Rigidbody rigidbody;
+    private Transform player;       // Reference to the player
+    private Rigidbody rigidbody;    // Monster's rigidbody
     private bool isGrounded = false;
-    private bool canMove = true; // Movement toggle
+    private bool canMove = true;    // Movement toggle
 
     [SerializeField] private float moveForce     = 1f;
     [SerializeField] private float rotationSpeed = 2f;
@@ -14,6 +14,7 @@ public class Monster : MonoBehaviour
     [SerializeField] private float jumpCooldown  = 2f;
     [SerializeField] private float pauseTime     = 5f;
     private float jumpTimer = 0f;
+    private float pauseTimer = 0f;  // Separate timer for pause logic
 
     private void Awake()
     {
@@ -30,8 +31,9 @@ public class Monster : MonoBehaviour
 
         if (other.gameObject.name.Contains("Wall"))
         {
-            Destroy(other.gameObject);
-            canMove = false; // Pause movement
+            Destroy(other.gameObject); // Destroy wall
+            canMove = false;           // Pause movement
+            pauseTimer = pauseTime;    // Start pause timer
             Debug.Log("Argh!");
         }
     }
@@ -46,35 +48,33 @@ public class Monster : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(pauseTime);
-        if (pauseTime <= 0)
+        // Handle pause timer
+        if (!canMove)
         {
-            canMove = true;
-            pauseTime = 5f;
+            pauseTimer -= Time.fixedDeltaTime;
+            if (pauseTimer <= 0f)
+            {
+                canMove = true;
+            }
+            return; // Skip movement while paused
         }
-        else if  (pauseTime > 0 && !canMove)
-        {
-            pauseTime -= Time.fixedDeltaTime;
-        }
-        else
-        {
-            pauseTime = 5f;
-        }
-        if (!canMove) return; // Skip movement if paused
 
         jumpTimer += Time.fixedDeltaTime;
 
         Vector3 direction = player.position - transform.position;
         direction.y = 0f;
 
+        // Rotate toward player
         if (direction != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
         }
 
+        // Apply forward movement
         rigidbody.AddRelativeForce(Vector3.forward * moveForce);
 
+        // Jump if grounded and cooldown met
         if (isGrounded && jumpTimer >= jumpCooldown && direction.magnitude > 0.2f)
         {
             rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
