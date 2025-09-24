@@ -34,5 +34,4 @@ public class BuyItemWalls : MonoBehaviour
             trashcan.RemoveTrashThrownCount(2);
         }
     }
-
 }
