@@ -287,10 +287,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1664091554}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -931, y: 0}
-  m_SizeDelta: {x: 1404, y: 790}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -462, y: 0}
+  m_SizeDelta: {x: -924, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &51318998
 MonoBehaviour:
@@ -1318,7 +1318,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Distraction - 2 Trash
+  m_text: 'Distraction - 5 Trash
 
 '
   m_isRightToLeft: 0
@@ -1654,6 +1654,7 @@ GameObject:
   - component: {fileID: 1681819912}
   - component: {fileID: 1681819911}
   - component: {fileID: 1681819910}
+  - component: {fileID: 1681819913}
   m_Layer: 5
   m_Name: Buy Distraction
   m_TagString: Untagged
@@ -1763,6 +1764,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1681819908}
   m_CullTransparentMesh: 1
+--- !u!114 &1681819913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681819908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de7e585620912ed4b8ece1a95d2bfb2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BuyItemDistraction
+  myButton: {fileID: 1681819910}
+  trashcan: {fileID: 6704060376795145597, guid: 9f2ebf71582c2314e988f3af915772e7, type: 3}
+  distractionPrefab: {fileID: 1242378430786131091, guid: 4718d83bfff21af41b05df1fd2812261, type: 3}
 --- !u!1 &1828171585
 GameObject:
   m_ObjectHideFlags: 0

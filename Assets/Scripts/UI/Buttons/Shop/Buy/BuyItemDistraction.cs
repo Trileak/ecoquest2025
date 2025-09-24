@@ -9,7 +9,7 @@ public class BuyItemDistraction : MonoBehaviour
     
     [SerializeField] private Button myButton;
     [SerializeField] private Trashcan trashcan;
-    [SerializeField] private GameObject wallsPrefab;
+    [SerializeField] private GameObject distractionPrefab;
 
     void Start()
     {
@@ -28,10 +28,10 @@ public class BuyItemDistraction : MonoBehaviour
 
         if (trashcan.TrashThrownCount() >= 2)
         {
-            GameObject walls = Instantiate(wallsPrefab, player.GetGrabPointTransform().position, Quaternion.identity);
-            walls.GetComponent<HoldManager>()?.OnBought(player.GetGrabPointTransform());
-            player.AddGameObject(walls);
-            trashcan.RemoveTrashThrownCount(2);
+            GameObject distraction = Instantiate(distractionPrefab, player.GetGrabPointTransform().position, Quaternion.identity);
+            distraction.GetComponent<HoldManager>()?.OnBought(player.GetGrabPointTransform());
+            player.AddGameObject(distraction);
+            trashcan.RemoveTrashThrownCount(5);
         }
     }
 }
