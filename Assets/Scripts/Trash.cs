@@ -23,6 +23,7 @@ public class Trash : MonoBehaviour
     public void Grab(Transform objectGrabPointTransform) // When grabbed
     {
         this.objectGrabPointTransform = objectGrabPointTransform; // Get the object's transform
+        transform.SetParent(objectGrabPointTransform);
         objectRigidbody.useGravity    = false;                    // Stop using gravity 
         objectRigidbody.isKinematic   = true;                     // Stop using the rigidbody
         isHeld                        = true;                     // Become held
@@ -39,6 +40,7 @@ public class Trash : MonoBehaviour
 
     public void Drop()
     {
+        transform.SetParent(null);
         objectRigidbody.isKinematic = false; // Start using the rigidbody
         objectRigidbody.useGravity  = true;  // Start using gravity
         isHeld                      = false; // Start being held
@@ -49,14 +51,6 @@ public class Trash : MonoBehaviour
             {
                 collider.enabled = true;
             }
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (objectRigidbody && isHeld) // If object rigidbody isn't null and is being held
-        {
-            objectRigidbody.MovePosition(objectGrabPointTransform.position); // Go to the transform position
         }
     }
     
