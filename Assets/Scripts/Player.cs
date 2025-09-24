@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
 
     private void PlacePerformed(InputAction.CallbackContext obj)
     {
-        if (items.Count > 0)
+        if (items.Count > 0 && transform.position.y < 7)
         {
             items[0].TryGetComponent<HoldManager>(out HoldManager holdManager);
             holdManager.Drop();
