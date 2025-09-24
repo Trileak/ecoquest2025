@@ -58,22 +58,30 @@ public class Monster : MonoBehaviour
             return;
         }
 
-        GameObject[] targets = GameObject.FindGameObjectsWithTag("Followable");
-
         followables.Clear();
-        
+        GameObject[] targets = GameObject.FindGameObjectsWithTag("Followable");
         foreach (GameObject target in targets)
         {
             followables.Add(target.transform);
         }
 
-        followables.Add(FindFirstObjectByType<Player>().transform);
-        
-        jumpTimer += Time.fixedDeltaTime;
+        Player player = FindFirstObjectByType<Player>();
+        if (player != null)
+        {
+            followables.Add(player.transform);
+        }
 
-        // Select closest followable
-        currentTarget = GetClosestFollowable();
-        if (currentTarget == null) return;
+        if (followables.Count > 0)
+        {
+            currentTarget = followables[0];
+        }
+        else
+        {
+            currentTarget = null;
+        }
+
+
+        jumpTimer += Time.fixedDeltaTime;
 
         Vector3 direction = currentTarget.position - transform.position;
         direction.y = 0f;
@@ -91,23 +99,5 @@ public class Monster : MonoBehaviour
             rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             jumpTimer = 0f;
         }
-    }
-
-    private Transform GetClosestFollowable()
-    {
-        Transform closest = null;
-        float minDistance = Mathf.Infinity;
-
-        foreach (Transform t in followables)
-        {
-            float dist = Vector3.Distance(transform.position, t.position);
-            if (dist < minDistance)
-            {
-                minDistance = dist;
-                closest = t;
-            }
-        }
-
-        return closest;
     }
 }
