@@ -19,13 +19,16 @@ public class Walls : MonoBehaviour
     {
         if (holdManager.IsHeld())
         {
-            objectHoldTransform = player.GetGrabPointTransform();
-            rigidbody.MovePosition(objectHoldTransform.position);
+            // Smoothly move toward the grab point
+            Vector3 targetPosition = objectHoldTransform.position;
+            Vector3 newPosition = Vector3.Lerp(transform.position, targetPosition, 0.2f);
+            rigidbody.MovePosition(newPosition);
+
+            // Rotate to face the player
             Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
             Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer, Vector3.up);
-            targetRotation *= Quaternion.Euler(0, -90f, 0);
-            rigidbody.MoveRotation(targetRotation);
+            targetRotation *= Quaternion.Euler(0, -90f, 0); // Adjust based on wall's orientation
+            rigidbody.MoveRotation(Quaternion.Slerp(rigidbody.rotation, targetRotation, 0.2f));
         }
     }
-
 }
