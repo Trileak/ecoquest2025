@@ -11,14 +11,14 @@ public class BuyItemWalls : MonoBehaviour
     [SerializeField] private Trashcan trashcan;
     [SerializeField] private GameObject wallsPrefab;
 
-    void Start()
+    private void Start()
     {
         trashcan = FindObjectOfType<Trashcan>();
         player = GameObject.Find("Player")?.GetComponent<Player>();
-        myButton?.onClick.AddListener(HandleClick);
+        myButton?.onClick.AddListener(OnBuyWall);
     }
 
-    void HandleClick()
+    private void OnBuyWall()
     {
         if (trashcan == null || player == null)
         {
