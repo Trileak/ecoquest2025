@@ -13,7 +13,7 @@ public class Distraction : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if ((this.transform.position - monsterTransform.position).magnitude < 2f) // If the monster is close to the object
+        if ((this.transform.position - monsterTransform.position).magnitude < 3f) // If the monster is close to the object
         {
             Destroy(this.gameObject); // Destroy it
         }
