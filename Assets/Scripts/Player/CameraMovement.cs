@@ -15,8 +15,8 @@ public class CameraMovement : MonoBehaviour
         Vector2 mouseMovement = player.GetMouseMovement();
         float mouseY = mouseMovement.y;
         cameraY -= mouseY / 40f;
-        cameraY = Mathf.Clamp(cameraY, -90f, 90f); // Clamp between -90 and 90 degrees
+        cameraY = Mathf.Clamp(cameraY, -90f, 90f);
 
-        transform.localEulerAngles = new Vector3(cameraY, 0f, 0f); // Applies rotation
+        transform.localEulerAngles = new Vector3(cameraY, 0f, 0f);
     }
 }

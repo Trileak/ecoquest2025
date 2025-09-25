@@ -15,13 +15,13 @@ public class TrashTracker : MonoBehaviour
 
     private void Awake()
     {
-        player = FindObjectOfType<Player>();
         trashTransforms = new List<Transform>();
         trackerObjects = new List<GameObject>();
     }
 
     private float GetAngleOfTrash(Transform trashTransform)
     {
+        player = FindObjectOfType<Player>();
         Vector3 toTrash = trashTransform.position - player.transform.position;
         toTrash.y = 0;
         Vector3 playerForward = player.transform.forward;
@@ -32,26 +32,26 @@ public class TrashTracker : MonoBehaviour
     
     private void UpdateTrackers()
     {
-        for (int i = 0; i < trashTransforms?.Count; i++)
+        for (int i = 0; i < trashTransforms.Count; i++)
         {
-            Debug.Log(trashTransforms[i]);
-            float angle = GetAngleOfTrash(trashTransforms[i]) * 2; // Range: -180 to 180 * 2 for both
+            if (trashTransforms[i] == null || trackerObjects[i] == null)
+            {
+                Debug.LogWarning($"Null reference at index {i}. Skipping.");
+                continue;
+            }
 
+            float angle = GetAngleOfTrash(trashTransforms[i]) * 2;
             Vector3 trackerPos = trackerObjects[i].transform.position;
-            trackerPos.x = angle + Screen.width / 2; // Offset to middle of the screen
-            trackerObjects[i].transform.position = trackerPos; 
+            trackerPos.x = angle + Screen.width / 2;
+            trackerObjects[i].transform.position = trackerPos;
         }
     }
+
 
 
     private void FixedUpdate()
     {
         UpdateTrackers();
-    }
-
-    private float NormalizeAngle(float angle)
-    {
-        return Mathf.DeltaAngle(0f, angle);
     }
     
     public void AddTrash(Transform trash)
