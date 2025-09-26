@@ -16,8 +16,6 @@ public class Events
 
     public static void TriggerWin()
     {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
         OnWin?.Invoke();
         SceneManager.LoadScene("WinScene", LoadSceneMode.Additive);
         Time.timeScale = 0f;
@@ -25,16 +23,12 @@ public class Events
 
     public static void TriggerLoss()
     {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
         OnLoss?.Invoke();
         Time.timeScale = 0f;
     }
 
     public static void TriggerGameEnd()
     {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
         OnGameOver?.Invoke();
         Time.timeScale = 1f;
     }

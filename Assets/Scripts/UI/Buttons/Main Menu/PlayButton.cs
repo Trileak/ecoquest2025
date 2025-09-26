@@ -7,13 +7,11 @@ public class PlayButton : MonoBehaviour
     private Canvas gameCanvas;
     
     [SerializeField] private Button myButton;
-    [SerializeField] private GameObject player;
 
     private void Start()
     {
         SceneManager.LoadScene("SampleScene", LoadSceneMode.Additive);
         
-        Instantiate(player);
         myButton?.onClick.AddListener(OnPlayPressed);
         Time.timeScale = 0f; // Pause game while in menu
         Cursor.lockState = CursorLockMode.None;

@@ -68,7 +68,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trashThrownCount: 0
-  totalTrashThrownCount: 100
   game: {fileID: 0}
 --- !u!1001 &4264818440497961693
 PrefabInstance:

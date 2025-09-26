@@ -17,8 +17,5 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/IntroScene.unity
     guid: 298f007ea9e346b4c8422e0f4fa09f4a
-  - enabled: 1
-    path: Assets/Scenes/WinScene.unity
-    guid: b0f24143e54e8074ab7f73f8d43d7028
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
