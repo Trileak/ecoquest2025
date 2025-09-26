@@ -52,8 +52,8 @@ public class Player : MonoBehaviour
     {
         Vector2 input2D    = playerInputActions.Player.Movement.ReadValue<Vector2>();
         playerRigidBody.AddRelativeForce(new Vector3(input2D.x, 0, input2D.y) * speed, ForceMode.Force);   // Adds force
-        playerRigidBody.linearDamping        = 0f;                                                        // Linear drag
-        playerRigidBody.angularDamping       = 0.05f;                                                 // Rotational drag
+        playerRigidBody.linearDamping        = 0f;                                                         // Linear drag
+        playerRigidBody.angularDamping       = 0.05f;                                                      // Rotational drag
     }
 
     private void OnEnable()
