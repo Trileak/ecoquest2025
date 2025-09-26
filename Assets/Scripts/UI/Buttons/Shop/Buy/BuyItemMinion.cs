@@ -10,21 +10,15 @@ public class BuyItem : MonoBehaviour
     [SerializeField] private Trashcan trashcan;
     [SerializeField] private GameObject minionPrefab;
 
-    private void Start()
+    void Start()
     {
-        myButton?.onClick.AddListener(OnBuyMinion);
+        myButton?.onClick.AddListener(HandleClick);
         trashcan = FindObjectOfType<Trashcan>();
         player   = FindObjectOfType<Player>();
     }
 
-    private void OnBuyMinion()
+    void HandleClick()
     {
-        if (trashcan == null || player == null)
-        {
-            Debug.LogWarning("Missing reference to Trashcan or Player.");
-            return;
-        }
-        
         if (trashcan?.TrashThrownCount() >= 10)
         {
             trashcan?.RemoveTrashThrownCount(10);

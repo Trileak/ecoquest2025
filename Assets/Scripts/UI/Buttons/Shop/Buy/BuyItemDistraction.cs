@@ -11,14 +11,14 @@ public class BuyItemDistraction : MonoBehaviour
     [SerializeField] private Trashcan trashcan;
     [SerializeField] private GameObject distractionPrefab;
 
-    private void Start()
+    void Start()
     {
         trashcan = FindObjectOfType<Trashcan>();
         player = GameObject.Find("Player")?.GetComponent<Player>();
-        myButton?.onClick.AddListener(OnBuyDistraction);
+        myButton?.onClick.AddListener(HandleClick);
     }
 
-    private void OnBuyDistraction()
+    void HandleClick()
     {
         if (trashcan == null || player == null)
         {
