@@ -17,5 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/IntroScene.unity
     guid: 298f007ea9e346b4c8422e0f4fa09f4a
+  - enabled: 1
+    path: Assets/Scenes/WinPopup.unity
+    guid: 556203e61f71ffc4793e569ca8311faf
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

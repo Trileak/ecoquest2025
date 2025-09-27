@@ -36,6 +36,11 @@ public class Monster : MonoBehaviour
             pauseTimer = pauseTime;
             Debug.Log("Argh!");
         }
+
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Gotcha!");
+        }
     }
 
     private void OnCollisionExit(Collision other)
@@ -47,6 +52,11 @@ public class Monster : MonoBehaviour
     }
 
     private void FixedUpdate()
+    {
+        AttackFollowables();
+    }
+
+    private void AttackFollowables()
     {
         if (!canMove)
         {
@@ -80,7 +90,6 @@ public class Monster : MonoBehaviour
             currentTarget = null;
         }
 
-
         jumpTimer += Time.fixedDeltaTime;
 
         Vector3 direction = currentTarget.position - transform.position;
@@ -100,4 +109,5 @@ public class Monster : MonoBehaviour
             jumpTimer = 0f;
         }
     }
+
 }

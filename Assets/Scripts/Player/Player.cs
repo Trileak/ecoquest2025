@@ -44,8 +44,6 @@ public class Player : MonoBehaviour
         trashTracker       = FindObjectOfType<TrashTracker>();
         itemsHeld          = new List<Trash>();
         items              = new List<GameObject>();
-
-        DontDestroyOnLoad(gameObject);
     }
 
     private void FixedUpdate()
@@ -145,7 +143,10 @@ public class Player : MonoBehaviour
     private void LookPerformed(InputAction.CallbackContext context)
     {
         mouseMovement = context.ReadValue<Vector2>();
-        transform.Rotate(0f, mouseMovement.x / 50f, 0f);
+        if (this)
+        {
+            transform.Rotate(0f, mouseMovement.x / 50f, 0f);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

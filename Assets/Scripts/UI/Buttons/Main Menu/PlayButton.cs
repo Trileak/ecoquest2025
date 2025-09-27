@@ -10,8 +10,10 @@ public class PlayButton : MonoBehaviour
 
     private void Start()
     {
-        SceneManager.LoadScene("SampleScene", LoadSceneMode.Additive);
-        
+        if (!SceneManager.GetSceneByName("SampleScene").isLoaded)
+        {
+            SceneManager.LoadScene("SampleScene", LoadSceneMode.Additive);
+        }
         myButton?.onClick.AddListener(OnPlayPressed);
         Time.timeScale = 0f; // Pause game while in menu
         Cursor.lockState = CursorLockMode.None;

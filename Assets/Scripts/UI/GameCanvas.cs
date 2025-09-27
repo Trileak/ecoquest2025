@@ -11,6 +11,9 @@ public class GameCanvas : MonoBehaviour
     
     private void EventsOnGameStart()
     {
-        gameObject.SetActive(true);
+        if (this)
+        {
+            gameObject.SetActive(true);
+        }
     }
 }

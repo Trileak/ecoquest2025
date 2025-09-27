@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class Events
@@ -17,13 +18,15 @@ public class Events
     public static void TriggerWin()
     {
         OnWin?.Invoke();
-        SceneManager.LoadScene("WinScene", LoadSceneMode.Additive);
+        SceneManager.LoadScene("WinPopup", LoadSceneMode.Additive);
+        MouseControl(false);
         Time.timeScale = 0f;
     }
 
     public static void TriggerLoss()
     {
         OnLoss?.Invoke();
+        MouseControl(false);
         Time.timeScale = 0f;
     }
 
@@ -31,5 +34,19 @@ public class Events
     {
         OnGameOver?.Invoke();
         Time.timeScale = 1f;
+    }
+
+    public static void MouseControl(bool doLock)
+    {
+        if (!doLock)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 }
