@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask pickUpLayerMask;          // The pickup layer mask
     [SerializeField] private Transform objectGrabPointTransform; // The transform of the grab point
     [SerializeField] private int grabAmount;                     // The amount that can be grabbed
+    [SerializeField] private int lives;
 
     private void Start()
     { 
@@ -173,6 +174,15 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void LoseLife()
+    {
+        lives -= 1;
+        if (lives <= 0)
+        {
+            Events.TriggerLoss();
+        }
+    }
+    
     public Vector2 GetMouseMovement()
     {
         return mouseMovement;

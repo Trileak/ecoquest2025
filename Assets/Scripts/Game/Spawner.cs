@@ -8,7 +8,9 @@ public class Spawner : MonoBehaviour
     
     [SerializeField] private float spawnInterval = 10f;
     [SerializeField] private float spawnRange    = 400f;
-    [SerializeField] private GameObject trash;
+    [SerializeField] private GameObject tetrapak;
+    [SerializeField] private GameObject can;
+    [SerializeField] private GameObject bottle;
 
     private void Start()
     {
@@ -20,10 +22,22 @@ public class Spawner : MonoBehaviour
     {
         Vector3 randomPosition = new Vector3(
             UnityEngine.Random.Range(-spawnRange, spawnRange),
-            1f, // fixed height, adjust as needed
+            1f,
             UnityEngine.Random.Range(-spawnRange, spawnRange)
         );
-        
-        trashTracker?.AddTrash(Instantiate(trash, randomPosition, Quaternion.identity).transform);
+
+        int choice = UnityEngine.Random.Range(1, 4);
+        if (choice == 1)
+        {
+            trashTracker?.AddTrash(Instantiate(tetrapak, randomPosition, Quaternion.identity).transform);
+        }
+        else if (choice == 2)
+        {
+            trashTracker?.AddTrash(Instantiate(can, randomPosition, Quaternion.identity).transform);
+        }
+        else if (choice == 3)
+        {
+            trashTracker?.AddTrash(Instantiate(bottle, randomPosition, Quaternion.identity).transform);
+        }
     }
 }

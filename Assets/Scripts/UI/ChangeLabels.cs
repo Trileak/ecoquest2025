@@ -5,17 +5,19 @@ using UnityEngine;
 
 public class ChangeLabels : MonoBehaviour
 {
-    private Trashcan trashcan;
-    
+    [SerializeField] Trashcan trashcanTetrapak;
+    [SerializeField] Trashcan trashcanSoda;
+    [SerializeField] Trashcan trashcanBottle;
     [SerializeField] private TextMeshProUGUI trashCounterLabel;
-    
-    void Start()
-    {
-        trashcan = FindObjectOfType<Trashcan>();
-    }
 
     void FixedUpdate()
     {
-        trashCounterLabel.SetText($"Trash: {trashcan.TrashThrownCount()}");
+        int totalTrash = trashcanTetrapak.TrashThrownCount() + trashcanSoda.TrashThrownCount() + trashcanBottle.TrashThrownCount();
+        trashCounterLabel.SetText($"Trash: {totalTrash}");
+    }
+
+    public int GetTotalTrash()
+    {
+        return trashcanTetrapak.TrashThrownCount() + trashcanSoda.TrashThrownCount() + trashcanBottle.TrashThrownCount();
     }
 }

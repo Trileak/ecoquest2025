@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 
 public class Trash : MonoBehaviour
@@ -23,46 +24,32 @@ public class Trash : MonoBehaviour
     {
         this.objectGrabPointTransform = objectGrabPointTransform; // Get the object's transform
         transform.SetParent(objectGrabPointTransform);
-        objectRigidbody.useGravity    = false;                    // Stop using gravity 
-        objectRigidbody.isKinematic   = true;                     // Stop using the rigidbody
-        isHeld                        = true;                     // Become held
-        foreach (Transform child in gameObject.transform) // For each child in this parent
-        {
-            Collider collider = child.GetComponent<Collider>(); // Get the collider
-            if (collider != null) // If there is a collider
-            {
-                collider.enabled = false; // Turn it off
-            }
-        }
-
+        objectRigidbody.useGravity                             = false; // Stop using gravity 
+        objectRigidbody.isKinematic                            = true;  // Stop using the rigidbody
+        isHeld                                                 = true;  // Become held
+        gameObject.transform.GetComponent<Collider>().enabled  = false; // Turn off parent collider
+        Collider playerCollider = FindObjectOfType<Player>().GetComponentInChildren<Collider>();
+        Physics.IgnoreCollision(transform.GetComponent<Collider>(), playerCollider, true);
     }
 
     public void Drop()
     {
-        transform.SetParent(null);
-        objectRigidbody.isKinematic = false; // Start using the rigidbody
-        objectRigidbody.useGravity  = true;  // Start using gravity
-        isHeld                      = false; // Start being held
-        foreach (Transform child in gameObject.transform) // Same as line 22 but turns *on* the collider
+        if (transform != null)
         {
-            Collider collider = child.GetComponent<Collider>();
-            if (collider != null)
-            {
-                collider.enabled = true;
-            }
+            transform.SetParent(null);
+            objectRigidbody.isKinematic = false; // Start using the rigidbody
+            objectRigidbody.useGravity = true; // Start using gravity
+            isHeld = false; // Start being held
+            gameObject.transform.GetComponent<Collider>().enabled = true; // Turn on parent collider
+            Collider playerCollider = FindObjectOfType<Player>().GetComponentInChildren<Collider>();
+            Physics.IgnoreCollision(transform.GetComponent<Collider>(), playerCollider, true);
         }
     }
-    
+
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "Trash Can")
+        if (collision.gameObject.name.Contains("TrashCan"))
         {
-            trashTracker.DeleteTrash(gameObject.transform);
-            if (isThrown == false)
-            {
-                trashcan.AddTrashThrownCount(); // Add 1 to the trash thrown count
-                isThrown = !isThrown;           // Same as isThrown = true 
-            }
             Destroy(this.gameObject); // Destroy this game object
         }
     }

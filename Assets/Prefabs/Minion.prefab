@@ -190,7 +190,6 @@ MonoBehaviour:
   moveForce: 100
   dodgeForce: 1
   objectGrabPoint: {fileID: 6204434599953747878}
-  trashCan: {fileID: 0}
 --- !u!114 &-893965077601758118
 MonoBehaviour:
   m_ObjectHideFlags: 0

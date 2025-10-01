@@ -21,12 +21,18 @@ public class TrashTracker : MonoBehaviour
     {
         foreach (var trashTransform in trashTransforms)
         {
-            Destroy(trashTransform.gameObject);
+            if (trashTransform != null)
+            {
+                Destroy(trashTransform.gameObject);
+            }
         }
 
         foreach (var trackerObject in trackerObjects)
         {
-            Destroy(trackerObject.gameObject);
+            if (trackerObject != null)
+            {
+                Destroy(trackerObject.gameObject);
+            }
         }
         trashTransforms.Clear();
         trackerObjects.Clear();

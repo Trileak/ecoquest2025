@@ -9,7 +9,13 @@ public class Events
     public static event Action OnWin;
     public static event Action OnLoss;
     public static event Action OnGameOver;
+    public static event Action OnMisplace;
 
+    public static void TriggerMisplace()
+    {
+        OnMisplace?.Invoke();
+    }
+    
     public static void TriggerGameStart()
     {
         OnGameStart?.Invoke();
@@ -26,6 +32,7 @@ public class Events
     public static void TriggerLoss()
     {
         OnLoss?.Invoke();
+        SceneManager.LoadScene("LosePopup", LoadSceneMode.Additive);
         MouseControl(false);
         Time.timeScale = 0f;
     }

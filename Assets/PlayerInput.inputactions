@@ -250,34 +250,6 @@
                     "isPartOfComposite": false
                 }
             ]
-        },
-        {
-            "name": "Shop",
-            "id": "a7ce4783-330f-44b0-ad82-076cfc4f168f",
-            "actions": [
-                {
-                    "name": "Exit",
-                    "type": "Button",
-                    "id": "289b750a-d889-4310-9785-d2515347e07f",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "088e952c-3a09-4535-adb5-bdf67099e1c8",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Exit",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
         }
     ],
     "controlSchemes": []
