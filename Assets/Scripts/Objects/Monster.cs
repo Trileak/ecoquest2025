@@ -12,6 +12,8 @@ public class Monster : MonoBehaviour
     private bool isWandering = false;
     private float idleTimer = 0f;
     private bool misplaced = false;
+    private float wanderTimer = 0f;
+    private float maxWanderTime = 5f;
 
 
     [SerializeField] private float wanderRadius  = 4f;
@@ -82,13 +84,22 @@ public class Monster : MonoBehaviour
     {
         if (!isWandering)
         {
-            Vector2 randomCircle = Random.insideUnitCircle * wanderRadius;
+            Vector2 randomRadius = Random.insideUnitCircle * wanderRadius;
             wanderTarget = new Vector3(
-                transform.position.x + randomCircle.x,
+                transform.position.x + randomRadius.x,
                 transform.position.y,
-                transform.position.z + randomCircle.y
+                transform.position.z + randomRadius.y
             );
             isWandering = true;
+            wanderTimer = 0f; // Reset timer when new wander starts
+        }
+
+        wanderTimer += Time.fixedDeltaTime;
+        if (wanderTimer >= maxWanderTime)
+        {
+            isWandering = false;
+            wanderTimer = 0f;
+            return;
         }
 
         Vector3 direction = wanderTarget - transform.position;
@@ -105,11 +116,13 @@ public class Monster : MonoBehaviour
             idleTimer += Time.fixedDeltaTime;
             if (idleTimer >= idleDuration)
             {
-                idleTimer = 0f;
+                idleTimer   = 0f;
                 isWandering = false;
+                wanderTimer = 0f;
             }
         }
     }
+
     
     private void AttackFollowables()
     {
