@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class TrashTracker : MonoBehaviour
 {
-    private readonly List<Transform> trashTransforms = new();
-    private readonly List<GameObject> trackerObjects = new();
+    // Tracker
+    private List<Transform> trashTransforms = new();
+    private List<GameObject> trackerObjects = new();
     private Player player;
-
+    private bool playingEndless = false;
+    
+    [SerializeField] private int totalThrownTrash = 0;
+    [SerializeField] private int thrownTrash      = 0;
+    
     [SerializeField] private GameObject trackerImagePrefab;
     [SerializeField] private GameObject trackerImageParent;
 
@@ -36,6 +41,8 @@ public class TrashTracker : MonoBehaviour
         }
         trashTransforms.Clear();
         trackerObjects.Clear();
+        totalThrownTrash = 0;
+        thrownTrash      = 0;
     }
 
     private float GetAngleOfTrash(Transform trashTransform)
@@ -58,41 +65,55 @@ public class TrashTracker : MonoBehaviour
             Transform trash = trashTransforms[i];
             GameObject tracker = trackerObjects[i];
 
-            if (trash == null || tracker == null) continue;
-
-            float angle = GetAngleOfTrash(trash) * 2;
-            Vector3 trackerPos = tracker.transform.position;
-            trackerPos.x = angle + Screen.width / 2;
-            tracker.transform.position = trackerPos;
+            if (trash != null || tracker != null)
+            {
+                float angle = GetAngleOfTrash(trash) * 2;
+                Vector3 trackerPos = tracker.transform.position;
+                trackerPos.x = angle + Screen.width / 2;
+                tracker.transform.position = trackerPos;
+            }
         }
     }
 
     private void FixedUpdate()
     {
         UpdateTrackers();
+        if (totalThrownTrash >= 100 && !playingEndless)
+        {
+            Events.TriggerWin();
+            playingEndless = true;
+        }
     }
 
     public void AddTrash(Transform trash)
     {
-        if (trash == null || trackerImagePrefab == null || trackerImageParent == null) return;
-
-        trashTransforms.Add(trash);
-        trackerObjects.Add(Instantiate(trackerImagePrefab, trackerImageParent.transform));
+        if (trash != null || trackerImagePrefab != null || trackerImageParent != null)
+        {
+            trashTransforms.Add(trash);
+            trackerObjects.Add(Instantiate(trackerImagePrefab, trackerImageParent.transform));
+        }
     }
 
     public void DeleteTrash(Transform trash)
     {
         int index = trashTransforms.IndexOf(trash);
-        if (index < 0 || index >= trackerObjects.Count) return;
-
-        Destroy(trackerObjects[index]);
-        trackerObjects.RemoveAt(index);
-        trashTransforms.RemoveAt(index);
+        if (!(index < 0 || index >= trackerObjects.Count))
+        {
+            Destroy(trackerObjects[index]);
+            trackerObjects.RemoveAt(index);
+            trashTransforms.RemoveAt(index);
+        }
     }
 
-    public int GetTrashCount() => trashTransforms.Count;
+    public int GetTrashCount()
+    {
+        return trashTransforms.Count;
+    }
 
-    public List<Transform> GetTrashTransforms() => new(trashTransforms);
+    public List<Transform> GetTrashTransforms()
+    {
+        return trashTransforms;
+    }
 
     public void HoldTrashTransform(Transform trashTransform)
     {
@@ -110,5 +131,21 @@ public class TrashTracker : MonoBehaviour
         {
             trackerObjects[index].transform.localScale = new Vector3(1, 1, 1);
         }
+    }
+
+    public void AddTrashThrown(int trash)
+    {
+        totalThrownTrash += trash;
+        thrownTrash      += trash;
+    }
+
+    public void RemoveTrashThrown(int trash)
+    {
+        thrownTrash -= trash;
+    }
+
+    public int TrashThrownCount()
+    {
+        return thrownTrash;
     }
 }

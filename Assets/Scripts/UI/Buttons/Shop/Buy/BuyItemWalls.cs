@@ -6,32 +6,26 @@ using UnityEngine.UI;
 public class BuyItemWalls : MonoBehaviour
 {
     private Player player;
+    private TrashTracker trashTracker;
     
     [SerializeField] private Button myButton;
-    [SerializeField] private Trashcan trashcan;
     [SerializeField] private GameObject wallsPrefab;
 
     void Start()
     {
-        trashcan = FindObjectOfType<Trashcan>();
+        trashTracker = FindObjectOfType<TrashTracker>();
         player = GameObject.Find("Player")?.GetComponent<Player>();
         myButton?.onClick.AddListener(HandleClick);
     }
 
     void HandleClick()
     {
-        if (trashcan == null || player == null)
-        {
-            Debug.LogWarning("Missing reference to Trashcan or Player.");
-            return;
-        }
-
-        if (trashcan.TrashThrownCount() >= 2)
+        if (trashTracker.TrashThrownCount() >= 2)
         {
             GameObject walls = Instantiate(wallsPrefab, player.GetGrabPointTransform().position, Quaternion.identity);
             walls.GetComponent<HoldManager>()?.OnBought(player.GetGrabPointTransform());
             player.AddGameObject(walls);
-            trashcan.RemoveTrashThrownCount(2);
+            trashTracker.RemoveTrashThrown(2);
         }
     }
 }

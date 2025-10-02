@@ -6,32 +6,26 @@ using UnityEngine.UI;
 public class BuyItemDistraction : MonoBehaviour
 {
     private Player player;
+    private TrashTracker trashTracker;
     
     [SerializeField] private Button myButton;
-    [SerializeField] private Trashcan trashcan;
     [SerializeField] private GameObject distractionPrefab;
 
     void Start()
     {
-        trashcan = FindObjectOfType<Trashcan>();
-        player = GameObject.Find("Player")?.GetComponent<Player>();
+        player       = GameObject.Find("Player")?.GetComponent<Player>();
+        trashTracker = GameObject.Find("TrashTracker")?.GetComponent<TrashTracker>();
         myButton?.onClick.AddListener(HandleClick);
     }
 
     void HandleClick()
     {
-        if (trashcan == null || player == null)
+        if (trashTracker.TrashThrownCount() >= 5)
         {
-            Debug.LogWarning("Missing reference to Trashcan or Player.");
-            return;
-        }
-
-        if (trashcan.TrashThrownCount() >= 2)
-        {
+            trashTracker.RemoveTrashThrown(5);
             GameObject distraction = Instantiate(distractionPrefab, player.GetGrabPointTransform().position, Quaternion.identity);
             distraction.GetComponent<HoldManager>()?.OnBought(player.GetGrabPointTransform());
             player.AddGameObject(distraction);
-            trashcan.RemoveTrashThrownCount(5);
         }
     }
 }

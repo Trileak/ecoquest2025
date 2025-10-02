@@ -737,8 +737,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuyItemWalls
   myButton: {fileID: 230189541}
-  trashcan: {fileID: 6704060376795145597, guid: 9f2ebf71582c2314e988f3af915772e7, type: 3}
-  wallsPrefab: {fileID: 4532592724708604074, guid: 27dd28c8ee03676489ce4c8bd9d81112, type: 3}
+  wallsPrefab: {fileID: 9129890916806838796, guid: 27dd28c8ee03676489ce4c8bd9d81112, type: 3}
 --- !u!1 &359082547
 GameObject:
   m_ObjectHideFlags: 0
@@ -1123,7 +1122,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myButton: {fileID: 661530848}
-  trashcan: {fileID: 6704060376795145597, guid: 9f2ebf71582c2314e988f3af915772e7, type: 3}
   minionPrefab: {fileID: 8856831073890952307, guid: 4273c57521134534a92d14b7963159cb, type: 3}
 --- !u!1 &1217084871
 GameObject:
@@ -1777,7 +1775,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuyItemDistraction
   myButton: {fileID: 1681819910}
-  trashcan: {fileID: 6704060376795145597, guid: 9f2ebf71582c2314e988f3af915772e7, type: 3}
   distractionPrefab: {fileID: 1242378430786131091, guid: 4718d83bfff21af41b05df1fd2812261, type: 3}
 --- !u!1 &1828171585
 GameObject:

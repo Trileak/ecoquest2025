@@ -32,7 +32,8 @@ public class Trashcan : MonoBehaviour
         if (collision.gameObject.name.Contains(acceptedTrash))
         {
             trashTracker.DeleteTrash(gameObject.transform);
-            AddTrashThrownCount(); // Add 1 to the trash thrown count
+            AddTrashThrownCount();
+            trashTracker.AddTrashThrown(1);
         }
         else if (collision.gameObject.GetComponent<Trash>() != null)
         {
@@ -41,14 +42,6 @@ public class Trashcan : MonoBehaviour
         else if (!collision.gameObject.name.Contains(acceptedTrash))
         {
             Debug.Log($"{acceptedTrash} != {collision.gameObject}");
-        }
-    }
-
-    private void LateUpdate()
-    {
-        if (totalTrashThrownCount >= 100 && !SceneManager.GetSceneByName("WinPopup").isLoaded && !playingEndless)
-        {
-            Events.TriggerWin();
         }
     }
     
@@ -61,11 +54,6 @@ public class Trashcan : MonoBehaviour
     public int TrashThrownCount()
     {
         return trashThrownCount;
-    }
-    
-    public int TotalTrashThrownCount()
-    {
-        return totalTrashThrownCount;
     }
 
     public void RemoveTrashThrownCount(int amount)

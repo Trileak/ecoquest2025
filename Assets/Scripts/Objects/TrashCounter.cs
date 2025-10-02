@@ -5,19 +5,19 @@ using TMPro;
 
 public class TrashCounter : MonoBehaviour
 {
-    private ChangeLabels changeLabels;
+    private TrashTracker trashTracker;
     
     [SerializeField] private TextMeshProUGUI text;
     
     private void Awake()
     {
-        changeLabels = FindAnyObjectByType<ChangeLabels>();
+        trashTracker = FindAnyObjectByType<TrashTracker>();
     }
     
     private void Update()
     {
         Debug.Log(text);
-        Debug.Log(changeLabels);
-        text.text = $"Trash: {changeLabels.GetTotalTrash()}";
+        Debug.Log(trashTracker);
+        text.text = $"Trash: {trashTracker.TrashThrownCount()}";
     }
 }
