@@ -145,6 +145,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""76bb3361-02cb-4fab-a446-d3cbb7ba6a47"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -334,32 +343,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Place"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""Shop"",
-            ""id"": ""a7ce4783-330f-44b0-ad82-076cfc4f168f"",
-            ""actions"": [
-                {
-                    ""name"": ""Exit"",
-                    ""type"": ""Button"",
-                    ""id"": ""289b750a-d889-4310-9785-d2515347e07f"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
+                },
                 {
                     ""name"": """",
-                    ""id"": ""088e952c-3a09-4535-adb5-bdf67099e1c8"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""id"": ""0cd71077-e120-4712-9623-09949fb16cd9"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Exit"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -376,15 +368,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Hold = m_Player.FindAction("Hold", throwIfNotFound: true);
         m_Player_Craft = m_Player.FindAction("Craft", throwIfNotFound: true);
         m_Player_Place = m_Player.FindAction("Place", throwIfNotFound: true);
-        // Shop
-        m_Shop = asset.FindActionMap("Shop", throwIfNotFound: true);
-        m_Shop_Exit = m_Shop.FindAction("Exit", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
     {
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, PlayerInputActions.Player.Disable() has not been called.");
-        UnityEngine.Debug.Assert(!m_Shop.enabled, "This will cause a leak and performance issues, PlayerInputActions.Shop.Disable() has not been called.");
     }
 
     /// <summary>
@@ -466,6 +455,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Hold;
     private readonly InputAction m_Player_Craft;
     private readonly InputAction m_Player_Place;
+    private readonly InputAction m_Player_Pause;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -501,6 +491,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Place".
         /// </summary>
         public InputAction @Place => m_Wrapper.m_Player_Place;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Pause".
+        /// </summary>
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -545,6 +539,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Place.started += instance.OnPlace;
             @Place.performed += instance.OnPlace;
             @Place.canceled += instance.OnPlace;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         /// <summary>
@@ -574,6 +571,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Place.started -= instance.OnPlace;
             @Place.performed -= instance.OnPlace;
             @Place.canceled -= instance.OnPlace;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         /// <summary>
@@ -607,102 +607,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="PlayerActions" /> instance referencing this action map.
     /// </summary>
     public PlayerActions @Player => new PlayerActions(this);
-
-    // Shop
-    private readonly InputActionMap m_Shop;
-    private List<IShopActions> m_ShopActionsCallbackInterfaces = new List<IShopActions>();
-    private readonly InputAction m_Shop_Exit;
-    /// <summary>
-    /// Provides access to input actions defined in input action map "Shop".
-    /// </summary>
-    public struct ShopActions
-    {
-        private @PlayerInputActions m_Wrapper;
-
-        /// <summary>
-        /// Construct a new instance of the input action map wrapper class.
-        /// </summary>
-        public ShopActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        /// <summary>
-        /// Provides access to the underlying input action "Shop/Exit".
-        /// </summary>
-        public InputAction @Exit => m_Wrapper.m_Shop_Exit;
-        /// <summary>
-        /// Provides access to the underlying input action map instance.
-        /// </summary>
-        public InputActionMap Get() { return m_Wrapper.m_Shop; }
-        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
-        public void Enable() { Get().Enable(); }
-        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
-        public void Disable() { Get().Disable(); }
-        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
-        public bool enabled => Get().enabled;
-        /// <summary>
-        /// Implicitly converts an <see ref="ShopActions" /> to an <see ref="InputActionMap" /> instance.
-        /// </summary>
-        public static implicit operator InputActionMap(ShopActions set) { return set.Get(); }
-        /// <summary>
-        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
-        /// </summary>
-        /// <param name="instance">Callback instance.</param>
-        /// <remarks>
-        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
-        /// </remarks>
-        /// <seealso cref="ShopActions" />
-        public void AddCallbacks(IShopActions instance)
-        {
-            if (instance == null || m_Wrapper.m_ShopActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_ShopActionsCallbackInterfaces.Add(instance);
-            @Exit.started += instance.OnExit;
-            @Exit.performed += instance.OnExit;
-            @Exit.canceled += instance.OnExit;
-        }
-
-        /// <summary>
-        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
-        /// </summary>
-        /// <remarks>
-        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
-        /// </remarks>
-        /// <seealso cref="ShopActions" />
-        private void UnregisterCallbacks(IShopActions instance)
-        {
-            @Exit.started -= instance.OnExit;
-            @Exit.performed -= instance.OnExit;
-            @Exit.canceled -= instance.OnExit;
-        }
-
-        /// <summary>
-        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="ShopActions.UnregisterCallbacks(IShopActions)" />.
-        /// </summary>
-        /// <seealso cref="ShopActions.UnregisterCallbacks(IShopActions)" />
-        public void RemoveCallbacks(IShopActions instance)
-        {
-            if (m_Wrapper.m_ShopActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        /// <summary>
-        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
-        /// </summary>
-        /// <remarks>
-        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
-        /// </remarks>
-        /// <seealso cref="ShopActions.AddCallbacks(IShopActions)" />
-        /// <seealso cref="ShopActions.RemoveCallbacks(IShopActions)" />
-        /// <seealso cref="ShopActions.UnregisterCallbacks(IShopActions)" />
-        public void SetCallbacks(IShopActions instance)
-        {
-            foreach (var item in m_Wrapper.m_ShopActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_ShopActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    /// <summary>
-    /// Provides a new <see cref="ShopActions" /> instance referencing this action map.
-    /// </summary>
-    public ShopActions @Shop => new ShopActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Player" which allows adding and removing callbacks.
     /// </summary>
@@ -752,20 +656,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPlace(InputAction.CallbackContext context);
-    }
-    /// <summary>
-    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Shop" which allows adding and removing callbacks.
-    /// </summary>
-    /// <seealso cref="ShopActions.AddCallbacks(IShopActions)" />
-    /// <seealso cref="ShopActions.RemoveCallbacks(IShopActions)" />
-    public interface IShopActions
-    {
         /// <summary>
-        /// Method invoked when associated input action "Exit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Pause" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnExit(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

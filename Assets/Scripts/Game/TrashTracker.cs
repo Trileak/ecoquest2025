@@ -4,21 +4,22 @@ using UnityEngine;
 
 public class TrashTracker : MonoBehaviour
 {
-    // Tracker
     private List<Transform> trashTransforms = new();
     private List<GameObject> trackerObjects = new();
     private Player player;
     private bool playingEndless = false;
-    
+    private GameObject compass;
+
     [SerializeField] private int totalThrownTrash = 0;
-    [SerializeField] private int thrownTrash      = 0;
-    
+    [SerializeField] private int thrownTrash = 0;
+
     [SerializeField] private GameObject trackerImagePrefab;
     [SerializeField] private GameObject trackerImageParent;
 
     private void Awake()
     {
         player = FindObjectOfType<Player>();
+        compass = GameObject.Find("Compass");
         Events.OnGameStart += EventsOnGameStart;
     }
 
@@ -39,10 +40,11 @@ public class TrashTracker : MonoBehaviour
                 Destroy(trackerObject.gameObject);
             }
         }
+
         trashTransforms.Clear();
         trackerObjects.Clear();
         totalThrownTrash = 0;
-        thrownTrash      = 0;
+        thrownTrash = 0;
     }
 
     private float GetAngleOfTrash(Transform trashTransform)
@@ -60,16 +62,24 @@ public class TrashTracker : MonoBehaviour
 
     private void UpdateTrackers()
     {
+        RectTransform compassRect = compass.GetComponent<RectTransform>();
+        float compassWidth = compassRect.rect.width;
+        Vector3 compassPos = compassRect.position;
+
         for (int i = 0; i < trashTransforms.Count; i++)
         {
             Transform trash = trashTransforms[i];
             GameObject tracker = trackerObjects[i];
 
-            if (trash != null || tracker != null)
+            if (trash != null && tracker != null)
             {
-                float angle = GetAngleOfTrash(trash) * 2;
+                float angle = GetAngleOfTrash(trash);
+                float normalizedX = (angle / 180f) * (compassWidth / 2f);
+
                 Vector3 trackerPos = tracker.transform.position;
-                trackerPos.x = angle + Screen.width / 2;
+                trackerPos.x = compassPos.x + normalizedX;
+                trackerPos.y = compassPos.y + 20f;
+
                 tracker.transform.position = trackerPos;
             }
         }
@@ -136,7 +146,7 @@ public class TrashTracker : MonoBehaviour
     public void AddTrashThrown(int trash)
     {
         totalThrownTrash += trash;
-        thrownTrash      += trash;
+        thrownTrash += trash;
     }
 
     public void RemoveTrashThrown(int trash)

@@ -63,6 +63,12 @@ public class Player : MonoBehaviour
         playerInputActions.Player.Hold.performed     += HoldPerformed;     // }
         playerInputActions.Player.Craft.performed    += CraftPerformed;    // }
         playerInputActions.Player.Place.performed    += PlacePerformed;    // }
+        playerInputActions.Player.Pause.performed    += PausePerformed;    // }
+    }
+
+    private void PausePerformed(InputAction.CallbackContext obj)
+    {
+        Debug.Log("doesnt work as of now");
     }
 
     private void PlacePerformed(InputAction.CallbackContext obj)
