@@ -180,7 +180,7 @@ public class Player : MonoBehaviour
 
     public void LoseLife()
     {
-        lives -= 1;
+        lives--;
         if (lives <= 0)
         {
             Events.TriggerLoss();
