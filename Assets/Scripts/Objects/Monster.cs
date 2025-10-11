@@ -7,15 +7,17 @@ public class Monster : MonoBehaviour
     private Transform currentTarget;
     private Rigidbody rigidbody;
     private bool isGrounded = false;
-    private bool canMove = true;
+    private bool canMove    = true;
     private Vector3 wanderTarget;
-    private bool isWandering = false;
-    private float idleTimer = 0f;
-    private bool misplaced = false;
-    private float wanderTimer = 0f;
+    private bool isWandering    = false;
+    private float idleTimer     = 0f;
+    private bool misplaced      = false;
+    private float wanderTimer   = 0f;
     private float maxWanderTime = 5f;
-
-
+    private LevelUp levelUp;
+    private TimeCycle timecycle;
+    private TrashTracker trashTracker;
+    
     [SerializeField] private float wanderRadius  = 4f;
     [SerializeField] private float idleDuration  = 3f;
     [SerializeField] private float moveForce     = 1f;
@@ -23,12 +25,15 @@ public class Monster : MonoBehaviour
     [SerializeField] private float jumpForce     = 2f;
     [SerializeField] private float jumpCooldown  = 2f;
     [SerializeField] private float pauseTime     = 5f;
-    private float jumpTimer = 0f;
+    private float jumpTimer  = 0f;
     private float pauseTimer = 0f;
 
     private void Awake()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        levelUp      = GameObject.Find("Game").GetComponent<LevelUp>();
+        rigidbody    = GetComponent<Rigidbody>();
+        timecycle    = GameObject.Find("Game").GetComponent<TimeCycle>();
+        trashTracker = GameObject.Find("Game").GetComponent<TrashTracker>();
         Events.OnMisplace += EventsOnMisplace;
     }
 
@@ -70,6 +75,40 @@ public class Monster : MonoBehaviour
 
     private void FixedUpdate()
     {
+        int level = levelUp.GetLevel();
+
+        switch (level)
+        {
+            case 0:
+                moveForce = (float)(10 * 0.5);
+                break;
+            case 1:
+                moveForce = (float)(10 * 0.6);
+                break;
+            case 2:
+                moveForce = (float)(10 * 0.7);
+                break;
+            case 3:
+                moveForce = (float)(10 * 0.8);
+                break;
+            case 4:
+                moveForce = (float)(10 * 0.85);
+                break;
+            case 5:
+                moveForce = (float)(10 * 0.925);
+                break;
+            case 6:
+                moveForce = (float)(10);
+                break;
+        }
+
+        if (moveForce > 10)
+        {
+            moveForce += (float)(10 * 0.002 * timecycle.GetDays());
+        }
+
+        moveForce += (float)(10 * 0.01 * trashTracker.GetTrashCount());
+        
         if (misplaced)
         {
             AttackFollowables();

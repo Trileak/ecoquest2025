@@ -68,14 +68,20 @@ public class Player : MonoBehaviour
 
     private void PausePerformed(InputAction.CallbackContext obj)
     {
-        Debug.Log("doesnt work as of now");
+        if (!SceneManager.GetSceneByName("PauseMenu").isLoaded)
+        {
+            Time.timeScale = 0f;
+            SceneManager.LoadScene("PauseMenu", LoadSceneMode.Additive);
+            playerInputActions.Player.Disable();
+            Events.MouseControl(false);
+        }
     }
 
     private void PlacePerformed(InputAction.CallbackContext obj)
     {
         if (items.Count > 0 && transform.position.y < 7)
         {
-            items[0].TryGetComponent<HoldManager>(out HoldManager holdManager);
+            items[0].TryGetComponent(out HoldManager holdManager);
             holdManager.Drop();
             items.RemoveAt(0);
         }
@@ -88,16 +94,6 @@ public class Player : MonoBehaviour
         playerInputActions.Player.Disable();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-
-    }
-
-    private void ExitPerformed(InputAction.CallbackContext obj)
-    {
-        SceneManager.UnloadSceneAsync("Shop");
-        Time.timeScale = 1f;
-        playerInputActions.Player.Enable();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     private void OnDisable()
@@ -207,5 +203,10 @@ public class Player : MonoBehaviour
     public void AddGameObject(GameObject obj)
     {
         items.Add(obj);
+    }
+
+    public int GetLives()
+    {
+        return lives;
     }
 }

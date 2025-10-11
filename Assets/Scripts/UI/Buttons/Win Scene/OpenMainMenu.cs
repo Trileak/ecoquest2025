@@ -13,8 +13,7 @@ public class OpenMainMenu : MonoBehaviour
 
     private void OnEndless()
     {
-        Debug.Log("Main Menu");
-        Time.timeScale = 1f;
+        SceneManager.UnloadSceneAsync("LosePopup");
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 }

@@ -88,7 +88,7 @@ public class TrashTracker : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateTrackers();
-        if (totalThrownTrash >= 100 && !playingEndless)
+        if (totalThrownTrash >= 50 && !playingEndless)
         {
             Events.TriggerWin();
             playingEndless = true;
@@ -157,5 +157,19 @@ public class TrashTracker : MonoBehaviour
     public int TrashThrownCount()
     {
         return thrownTrash;
+    }
+
+    public int TotalThrownTrashCount()
+    {
+        return totalThrownTrash;
+    }
+
+    public void SetTrashDespawnTimes(float time)
+    {
+        foreach (Transform trash in trashTransforms)
+        {
+            Trash trashCode = trash.GetComponent<Trash>();
+            trashCode.SetDespawnTime(time);
+        }
     }
 }

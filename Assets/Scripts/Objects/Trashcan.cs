@@ -38,25 +38,11 @@ public class Trashcan : MonoBehaviour
         {
             Events.TriggerMisplace();
         }
-        else if (!collision.gameObject.name.Contains(acceptedTrash))
-        {
-            Debug.Log($"{acceptedTrash} != {collision.gameObject}");
-        }
     }
     
     public void AddTrashThrownCount()
     {
         trashThrownCount++;
         totalTrashThrownCount++;
-    }
-
-    public int TrashThrownCount()
-    {
-        return trashThrownCount;
-    }
-
-    public void RemoveTrashThrownCount(int amount)
-    {
-        trashThrownCount = Mathf.Max(0, trashThrownCount - amount);
     }
 }

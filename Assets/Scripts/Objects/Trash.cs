@@ -12,12 +12,24 @@ public class Trash : MonoBehaviour
     private Trashcan trashcan;                  // The trashcan
     private bool isHeld = false;                // Check if object is held
     private bool isThrown = false;              // Check if the object is thrown (so doesn't give 3 points for 1 trash)
+    private float timeForDespawn = 60;
     
     private void Awake()
     {
         objectRigidbody = GetComponent<Rigidbody>();        // Get the rigidbody component
         trashTracker    = FindObjectOfType<TrashTracker>(); // Get the trashtracker object
         trashcan        = FindObjectOfType<Trashcan>();     // Get the trashcan object
+    }
+
+    private void FixedUpdate()
+    {
+        timeForDespawn -= Time.fixedDeltaTime;
+        Debug.Log(timeForDespawn);
+        if (timeForDespawn <= 0)
+        {
+            trashTracker.DeleteTrash(gameObject.transform);
+            Destroy(gameObject);
+        }
     }
     
     public void Grab(Transform objectGrabPointTransform) // When grabbed
@@ -42,7 +54,7 @@ public class Trash : MonoBehaviour
             isHeld = false; // Start being held
             gameObject.transform.GetComponent<Collider>().enabled = true; // Turn on parent collider
             Collider playerCollider = FindObjectOfType<Player>().GetComponentInChildren<Collider>();
-            Physics.IgnoreCollision(transform.GetComponent<Collider>(), playerCollider, true);
+            Physics.IgnoreCollision(transform.GetComponent<Collider>(), playerCollider, false);
         }
     }
 
@@ -50,6 +62,7 @@ public class Trash : MonoBehaviour
     {
         if (collision.gameObject.name.Contains("TrashCan"))
         {
+            trashTracker.DeleteTrash(gameObject.transform);
             Destroy(this.gameObject); // Destroy this game object
         }
     }
@@ -57,5 +70,10 @@ public class Trash : MonoBehaviour
     public bool IsHeld()
     {
         return isHeld;
+    }
+
+    public void SetDespawnTime(float time)
+    {
+        timeForDespawn = time;
     }
 }
