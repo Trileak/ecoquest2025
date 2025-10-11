@@ -164,7 +164,9 @@ public class Player : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.CompareTag("Floor"))
+        {
             floorCollision = false;
+        }
     }
 
     private void JumpPerformed(InputAction.CallbackContext context)
